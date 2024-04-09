@@ -1,0 +1,51 @@
+class Node(object):
+    
+    def __init__(self, n):
+        self.value = n
+        self.left = None
+        self.right = None
+        self.numChild = 0
+        
+    def insert(self, n):
+        if self.numChild == 0:
+            self.left = Node(self.value)
+            self.right = Node(n)
+        else:
+            if self.left.target() < self.right.target() and self.left.numChild >= self.right.numChild:
+                self.right.insert(n)
+            else:
+                self.left.insert(n)
+        self.numChild += 2
+    
+    def target(self):
+        '''finds the highest valued unpaired node'''
+        if self.numChild == 0:
+            return self.value
+        else:
+            if self.left.numChild < self.right.numChild:
+                return self.left.target()
+            else:
+                if self.left.numChild > self.right.numChild:
+                    return self.right.target()
+                else:
+                    return max(self.left.target(), self.right.target())
+    
+    def printNode(self):
+        if self.numChild == 0:
+            print self.value
+        else:
+            self.left.printNode()
+            self.right.printNode()
+    
+class Tree(object):
+    
+    def __init__(self, n):
+        self.headNode = Node(1)
+        for i in range(2, n+1):
+            self.headNode.insert(i)
+    
+    def printTree(self):
+        self.headNode.printNode()
+
+tree = Tree(13)
+tree.printTree()
