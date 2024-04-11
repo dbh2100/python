@@ -3,10 +3,29 @@
 # Python Repository
 
 This repository contains several Python projects I have worked on over the past several years, including
+
 * Python number type representations
   * [Quaternions](https://github.com/dbh2100/python/tree/main/quaternion)
-  * [Aleph Numbers](https://github.com/dbh2100/python/tree/main/aleph_numbers)
+  * [Aleph numbers](https://github.com/dbh2100/python/tree/main/aleph_numbers)
+
 * Python representations of 2- and 3-dimensional games
   * [2048](https://github.com/dbh2100/python/blob/main/board_games/game_2048.py)
   * [Connect4](https://github.com/dbh2100/python/blob/main/board_games/connect4.py)
   * [Othello](https://github.com/dbh2100/python/blob/main/board_games/othello.py)
+  * [Rubik's Cube](https://github.com/dbh2100/python/blob/main/rubiks_cube.py)
+
+* [Sorting algorithms](https://github.com/dbh2100/python/blob/main/sorting_algos.py)
+  
+* [Data structures](https://github.com/dbh2100/python/tree/main/data_structures)
+  * [Graphs](https://github.com/dbh2100/python/tree/main/data_structures/Graph)
+  * [Trees](https://github.com/dbh2100/python/tree/main/data_structures/tree)
+  * [Frozen/Immutable Dict](https://github.com/dbh2100/python/blob/main/data_structures/frozen_dict.py)
+  * [Minimum Heap](https://github.com/dbh2100/python/blob/main/data_structures/min_heap.py)
+
+* [Blockchain](https://github.com/dbh2100/python/blob/main/blockchain.py)
+  
+* [Converting a number to words](https://github.com/dbh2100/python/blob/main/number_to_words.py)
+
+* [Prime number generator](https://github.com/dbh2100/python/blob/main/prime_gen.py)
+
+* [Running median generator](https://github.com/dbh2100/python/blob/main/running_median.py)
