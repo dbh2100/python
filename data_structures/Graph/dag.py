@@ -1,3 +1,5 @@
+"""Defines a directed acyclic graph"""
+
 from collections import deque
 import functools
 from math import comb
@@ -6,6 +8,7 @@ import itertools
 import operator
 
 class GraphNode:
+    """Node for DAG"""
 
     def __init__(self, name):
         self.name = name
@@ -110,7 +113,6 @@ def combine_node_sets_2(node_sets: NodeSetList) -> NodeSetList:
     
     return node_sets
 
-# @functools.lru_cache(maxsize=None)
 def get_indirect_data(node: GraphNode) -> NodeSetList:
     '''Return sets of nodes which share no direct connections'''
 
