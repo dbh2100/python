@@ -1,11 +1,16 @@
+"""Define an immutable version of Python's builtin dict class"""
+
 from collections.abc import Mapping
 from typing import Any, Iterator
 
 class FrozenDict(Mapping):
+    """An immutable version of Python's builtin dict class"""
 
     def __init__(self, *args, **kwargs) -> None:
         self._dict = dict(*args, **kwargs)
 
+    # Delegate the getitem, iter, and len magic methods
+    # to the underlying dict
     def __getitem__(self, __key: Any) -> Any:
         return self._dict.__getitem__(__key)
 
