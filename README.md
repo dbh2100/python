@@ -17,7 +17,7 @@ This repository contains several Python projects I have worked on in my spare ti
 * [Sorting algorithms](https://github.com/dbh2100/python/blob/main/sorting_algos.py)
   
 * [Data structures](https://github.com/dbh2100/python/tree/main/data_structures)
-  * [Graphs](https://github.com/dbh2100/python/tree/main/data_structures/Graph)
+  * [Graphs](https://github.com/dbh2100/python/tree/main/data_structures/graph)
   * [Trees](https://github.com/dbh2100/python/tree/main/data_structures/tree)
   * [Frozen/Immutable Dict](https://github.com/dbh2100/python/blob/main/data_structures/frozen_dict.py)
   * [Minimum Heap](https://github.com/dbh2100/python/blob/main/data_structures/min_heap.py)
