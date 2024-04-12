@@ -84,7 +84,7 @@ def _convert_chunk(chunk):
     '''Returns words associated with chunk separated by comma'''
 
     # Intialize list
-    chunk_words = list()
+    chunk_words = []
 
     # Find hundreds, tens, and one digits of chunk
     hundreds, tens, ones = map(int, chunk.zfill(3))
@@ -121,7 +121,7 @@ def convert_to_words(num):
         return 'zero'
 
     # Initialize list
-    num_words = list()
+    num_words = []
 
     # Account for a negative number
     if num < 0:
@@ -140,7 +140,7 @@ def convert_to_words(num):
         if int(chunk) and exp1000 > 0:
             num_words.append(POWERS_1000[exp1000])
         exp1000 -= 1
-    
+
     return ' '.join(num_words)
 
 
