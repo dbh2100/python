@@ -1,12 +1,14 @@
+"""This module defines a Python representation of a Rubik's cube"""
+
 from collections import deque
 
-class RubiksCubeFace:
+class _RubiksCubeFace:
 
     __slots__ = ['_squares', 'top', 'bottom', 'left', 'right']
 
     def __init__(self, color) -> None:
 
-        squares = list()
+        squares = []
         for _ in range(3):
             squares.append(3 * [color])
         self._squares = squares
@@ -102,31 +104,33 @@ class RubiksCubeFace:
 
 
 class RubiksCube:
+    """Python class representing a Rubik's cube"""
 
     __slots__ = ['faces']
 
     def __init__(self) -> None:
         colors = ['R', 'B', 'G', 'Y', 'W', 'O']
-        self.faces = [RubiksCubeFace(color) for color in colors]
+        self.faces = [_RubiksCubeFace(color) for color in colors]
         self.set_adjacent(*self.faces)
 
-    def set_adjacent(self, face, top, bottom, left, right, back):
+    def set_adjacent(self, target_face, top, bottom, left, right, back):
         """Recursively set the adjacent faces for the target face
         and the other cube faces
         """
 
-        face.top = top
-        face.bottom = bottom
-        face.left = left
-        face.right = right
+        target_face.top = top
+        target_face.bottom = bottom
+        target_face.left = left
+        target_face.right = right
 
         # Check if top.left and bottom.right are already set to avoid infinite recursion
         if top.left is None:
-            self.set_adjacent(top, left, right, face, back, bottom)
+            self.set_adjacent(top, left, right, target_face, back, bottom)
         if bottom.right is None:
-            self.set_adjacent(bottom, right, left, back, face, top)
+            self.set_adjacent(bottom, right, left, back, target_face, top)
 
     def is_solved(self):
+        """Determine if all squares on each face have same color"""
         return all(face.all_same_color() for face in self.faces)
 
 

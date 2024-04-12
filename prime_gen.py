@@ -1,32 +1,30 @@
-import itertools
+"""Defines functions to generate prime numbers"""
+
 from config import command_args
-
-def sieve(ints):
-    prime = next(ints)
-    yield prime
-    not_divisible = filter(lambda x: x % prime, ints)
-    for p in sieve(not_divisible):
-        yield p
-
-primes = sieve(itertools.count(2))
 
 
 def prime_gen():
+    """Prime number generator"""
+
     prime_list = []
+
     n = 2
+
     while True:
+
         yield n
+
         prime_list.append(n)
         n += 1
-        while any([n % prime == 0 for prime in prime_list]):
+        while any(n % prime == 0 for prime in prime_list):
             n += 1
 
-#pg = prime_gen()
-#for i in range(10): print pg.next()
-        
+
 _cache = {2: [], 3: [2]}
-        
+
+
 def primes_to_n(n):
+    """Return all primes less than or equal to n using cache"""
 
     if command_args.debug:
         print(f'calling primes_to_n({n})')
@@ -37,7 +35,7 @@ def primes_to_n(n):
     if command_args.debug:
         print(f'{n} not yet cached for primes_to_n')
 
-    primes = list()
+    primes = []
 
     for i in range(2, n):
         max_factor = int(pow(i, 0.5) + 1)
@@ -49,9 +47,13 @@ def primes_to_n(n):
 
     return primes
 
-def primes_to_n_2(n):
 
-    primes = list()
+def primes_to_n_2(n):
+    """Return all primes less than or equal to n by keeping track
+    of smaller primes
+    """
+
+    primes = []
 
     for i in range(2, n):
 
@@ -69,6 +71,7 @@ def primes_to_n_2(n):
             primes.append(i)
 
     return primes
+
 
 if __name__ == '__main__':
     print(primes_to_n(100))

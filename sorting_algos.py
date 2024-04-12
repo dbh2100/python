@@ -13,9 +13,12 @@ import functools
 from string import ascii_lowercase
 from typing import NamedTuple, List
 
+
 class Pair(NamedTuple):
+    """Defines element used in counting_sort"""
     key: int
     num_string: str
+
 
 def radix_sort_str(arr, is_lower=True):
     '''arr is array of strings
@@ -77,8 +80,7 @@ def counting_sort_str(arr, si, is_lower=True):
     return output
 
 def radix_sort(arr):
-
-    # get_number = operator.itemgetter(1)
+    '''Impement radix sort'''
 
     num_strings = list(map(str, arr))
     k = max(map(len, num_strings))
@@ -91,16 +93,12 @@ def radix_sort(arr):
         keyed = [Pair(int(num_string[i]), num_string) for num_string in num_strings]
         sorted_keyed = counting_sort(keyed)
         num_strings = [pair.num_string for pair in sorted_keyed]
-        # num_strings = list(map(get_number, sorted_keyed))
-    
+
     return list(map(int, num_strings))
 
 def counting_sort(arr: List[Pair]):
     '''arr is array of tuples each of whose first element is its key'''
 
-    # get_key = operator.itemgetter(0)
-
-    # keys = list(map(get_key, arr))
     keys = [item.key for item in arr]
 
     n = len(arr)
@@ -146,6 +144,7 @@ def bucket_sort(arr, k):
     return functools.reduce(operator.add, buckets)
 
 def bubble_sort(arr):
+    '''Implement bubble sort'''
     n = len(arr)
     for _ in range(n):
         for i in range(n-1):
@@ -154,12 +153,13 @@ def bubble_sort(arr):
     return arr
 
 def quick_sort(arr):
+    '''Implement quick sort'''
 
     if not arr:
-        return list()
+        return []
 
     pivot = arr[0]
-    arr1, arr2 = list(), list()
+    arr1, arr2 = [], []
 
     for elem in arr[1:]:
         if elem < pivot:
@@ -170,6 +170,7 @@ def quick_sort(arr):
     return quick_sort(arr1) + [pivot] + quick_sort(arr2)
 
 def shell_sort(arr):
+    '''Implement shell sort'''
 
     gaps = [701, 301, 132, 57, 23, 10, 4, 1]
 
@@ -196,5 +197,5 @@ def shell_sort(arr):
 
                 # put temp (the original a[i]) in its correct location
                 arr[j] = temp
-    
+
     return arr

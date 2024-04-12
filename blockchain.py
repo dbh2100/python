@@ -1,11 +1,15 @@
+"""Defines a blockchain"""
+
 from dataclasses import dataclass
 import datetime
 import hashlib
 import base64
 import logging
 
+
 @dataclass
 class Block:
+    """Block for Blockchain"""
 
     data1: str
     data2: str
@@ -23,6 +27,7 @@ class Block:
         return f'Block{self.block_number}'
 
     def get_block_hash(self, previous_block_hash):
+        """Calculate the hash of the current block"""
         txn_hash = self.data1 + self.data2 + self.data3
         block_header = bytes(self.block_number)\
             + bytes(str(self.created_dt), encoding='utf8')\
@@ -31,6 +36,9 @@ class Block:
         return base64.b64encode(hashlib.sha256(combined).digest())
 
     def is_valid_chain(self, previous_block_hash):
+        """Validate block
+        If validation fails, the entire blockchain is not valid
+        """
         block_hash = self.get_block_hash(previous_block_hash)
         if block_hash != self.block_hash:
             self.logger.info('FAILED VERIFICATION')
@@ -40,7 +48,9 @@ class Block:
             return True
         return self.next_block.is_valid_chain(self.block_hash)
 
+
 class BlockChain:
+    """Blockchain class"""
 
     def __init__(self):
         self._head = None
@@ -48,6 +58,7 @@ class BlockChain:
         self._count = 0
 
     def add_block(self, data1, data2, data3):
+        """Add a block to the blockchain with given data"""
         self._count += 1
         previous_block_hash = self._last_block.block_hash if self._last_block else b''
         block = Block(data1, data2, data3, self._count, previous_block_hash)
@@ -58,6 +69,7 @@ class BlockChain:
         self._last_block = block
 
     def is_valid_chain(self):
+        """Check if blockchain is valid"""
         if self._head is None:
             raise ValueError('Genesis block not set')
         return self._head.is_valid_chain(b'')
