@@ -1,3 +1,5 @@
+"""Module defines a Python version of the board game Othello"""
+
 DIRECTIONS = [
     (-1, -1), # up and left
     (-1, 0),  # up
@@ -15,6 +17,7 @@ PLAYERS = ['Black', 'White']
 
 
 class Othello:
+    """Python version of the board game Othello"""
 
     __slots__ = ('_num_rows', '_num_cols', '_squares', '_num_squares',
                  '_current_player', '_scores')
@@ -22,7 +25,7 @@ class Othello:
     def __init__(self, num_rows, num_cols):
         self._num_rows = num_rows
         self._num_cols = num_cols
-        squares = list()
+        squares = []
         for _ in range(num_rows):
             squares.append(num_cols * [BLANK_SPACE])
         self._squares = squares
@@ -50,7 +53,7 @@ class Othello:
 
         for di, dj in DIRECTIONS:
 
-            squares_in_range = list()
+            squares_in_range = []
 
             i, j = i0 + di, j0 + dj
 
@@ -73,7 +76,7 @@ class Othello:
 
         i, j = -1, -1
         while not self._is_in_bounds(i, j) or self._squares[i][j] != BLANK_SPACE:
-            spot = input('%s, place stone (row, column): ' % self._current_player)
+            spot = input(f'{self._current_player}, place stone (row, column): ')
             try:
                 i, j = map(int, spot.split(','))
             except ValueError:
@@ -100,14 +103,15 @@ class Othello:
 
         # Announce result
         if self._scores[0] > self._scores[1]:
-            print('%s wins!' % PLAYERS[0])
+            print(f'{PLAYERS[0]} wins!')
         elif self._scores[0] < self._scores[1]:
-            print('%s wins!' % PLAYERS[1])
+            print(f'{PLAYERS[1]} wins!')
         else:
             print('Tie game')
         return True
 
     def display_board(self):
+        """Display the game's board"""
 
         n = self._num_cols
 
@@ -121,10 +125,10 @@ class Othello:
             print('  ' + ' '.join([5 * '_' for j in range(n)]))
 
         # Display scores
-        print('%s: %d; %s: %d' %
-              (PLAYERS[0], self._scores[0], PLAYERS[1], self._scores[1]))
+        print(f'{PLAYERS[0]}: {self._scores[0]}; {PLAYERS[1]}: {self._scores[1]}')
 
     def play_game(self):
+        """Start the game"""
         game_over = False
         while not game_over:
             self.display_board()

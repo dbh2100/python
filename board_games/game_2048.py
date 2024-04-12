@@ -1,8 +1,11 @@
+"""Defines a Python version of the popular mobile game 2048"""
+
 from random import random, randint
 from array import array
 from functools import partial
 
 class Game2048:
+    """Class simulating the popular mobile game 2048"""
 
     # Can be overriden in a subclass
     TARGET_VALUE = 2048
@@ -11,7 +14,7 @@ class Game2048:
 
     def __init__(self, size=3):
         self._size = size
-        self._squares = list()
+        self._squares = []
         for _ in range(size):
             #'H' is unsigned short
             self._squares.append(array('H', size*[0]))
@@ -55,9 +58,9 @@ class Game2048:
     def _get_move(self):
         """Get and execute player's input, returning maximum value on board"""
 
-        MOVES = {'up', 'left', 'right', 'down'}
+        moves = {'up', 'left', 'right', 'down'}
         direction = None
-        while direction not in MOVES:
+        while direction not in moves:
             direction = input('Enter move (up, down, left, or right): ').lower()
 
         size = self._size
@@ -106,7 +109,7 @@ class Game2048:
 
         return False
 
-    def _display(self):
+    def display(self):
         """Display the board"""
 
         row_boundary = ' '.join(self._size * ['____'])
@@ -116,7 +119,7 @@ class Game2048:
 
         for row in self._squares:
 
-            row_display = list()
+            row_display = []
             for square in row:
                 square_display = str(square).center(4) if square else '    '
                 row_display.append(square_display)
@@ -125,17 +128,18 @@ class Game2048:
             print('|' + '|'.join(row_display) + '|')
             print(row_boundary)
 
-    def _clear(self):
+    def clear(self):
         """Clear the board"""
+        srange = range(self._size)
         for row in self._squares:
-            for square in row:
-                square = 0
+            for i in srange:
+                row[i] = 0
 
     def play(self):
         """Start the game"""
 
         # Start by clearing the board
-        self._clear()
+        self.clear()
 
         while self._max_value < self.TARGET_VALUE:
 
@@ -143,7 +147,7 @@ class Game2048:
             if self._num_blanks:
                 self._place_value()
 
-            self._display()
+            self.display()
 
             # Exit game if no move can be made
             if not self._num_blanks and not self._can_move():
@@ -154,7 +158,7 @@ class Game2048:
 
         # When user gets 2048 square,
         # display the board one last time and the message
-        self._display()
+        self.display()
         print(f'You got the {self.TARGET_VALUE} square!')
 
 

@@ -15,7 +15,7 @@ class Connect4:
         self._num_rows = num_rows
         self._num_cols = num_cols
 
-        circles = list()
+        circles = []
         for _ in range(self._num_rows):
             circles.append(self._num_cols * [''])
         self._circles = circles
@@ -126,13 +126,14 @@ class Connect4:
         return self.is_game_over(i, j ,color)
 
     def enter_move(self) -> bool:
+        """Prompt the player to pick where to place circle"""
 
         j = -1
         n = self._num_cols
         player = self._current_player
         circles = self._circles
 
-        msg = '%s, enter column to place circle(1 - %d): ' % (player, n)
+        msg = f'{player}, enter column to place circle(1 - {n}): '
         while not 0 <= j < n:
             j_str = input(msg)
             try:
@@ -152,7 +153,7 @@ class Connect4:
         # If so, display board one last time and print message
         if self.place_circle(j, player):
             self.display_board()
-            print('%s wins!' % player)
+            print(f'{player} wins!')
             return True
 
         # Check if circle can no longer be placed
@@ -166,6 +167,7 @@ class Connect4:
         return False
 
     def display_board(self) -> None:
+        """Display the Connect4 board"""
 
         n = self._num_cols
 
@@ -179,6 +181,7 @@ class Connect4:
             print(' '.join([5 * '_' for _ in range(n)]))
 
     def play_game(self) -> None:
+        """Start the game"""
         game_over = False
         while not game_over:
             self.display_board()
