@@ -1,4 +1,4 @@
-"""This module defines a function that replicates Python's builtin eval()"""
+"""This module defines functions that replicate Python's builtin eval()"""
 
 import re
 
