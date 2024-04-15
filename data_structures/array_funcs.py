@@ -42,6 +42,55 @@ def reshape(arr: Sequence[Any], dims: Sequence[int]) -> Sequence[Any]:
     return arr_cls(new_array)
 
 
+def get_dimensions(arr):
+    """Find the dimensions/size of array arr"""
+    dims = []
+    arr_slice = arr[:]
+    while hasattr(arr_slice, '__len__'):
+        dims.append(len(arr_slice))
+        arr_slice = arr_slice[0]
+    return dims
+
+
+def get_element(arr, indices):
+    """Find the element of the array corresponding to the indices"""
+    arr_slice = arr[:]
+    for index in indices:
+        arr_slice = arr_slice[index]
+    return arr_slice
+
+
+def get_min_path(arr, indices=None):
+    """Get the shortest path from the element defined by indices
+    to the lower-right corner of the array arr
+    arr can be of any number of dimensions dimensions
+    """
+
+    # Find dimensions of array
+    dimensions = get_dimensions(arr)
+
+    # If indices not provided, start at upper-left corner
+    if indices is None:
+        indices = len(dimensions) * [0]
+
+    # Get the array element at indices
+    element = get_element(arr, indices)
+
+    # Find the indices which are not at the maximum value for the array
+    interior = [dim for dim, index in enumerate(indices) if index < (dimensions[dim] - 1)]
+
+    # Recusively calculate the values at the indices incrementing 1 for each interior dimension
+    if interior:
+        next_index_combos = [
+            [index + int(dim == int_dim) for dim, index in enumerate(indices)]
+            for int_dim in interior
+        ]
+        return element + min(get_min_path(arr, index) for index in next_index_combos)
+
+    # If already at lower-right corner, return the element
+    return element
+
+
 if __name__ == '__main__':
 
     from pprint import pprint
@@ -50,3 +99,5 @@ if __name__ == '__main__':
 
     pprint(reshape(a, [3, 4]))
     pprint(reshape(a, [4, 3]))
+
+    print(get_min_path(tuple(a)))
