@@ -6,11 +6,15 @@ def evaluate_equation(equation):
     if equation.isnumeric():
         return int(equation)
 
+    # Equation will be evaluated from right to left
+    # First remove leading "(" and trailing ")"
     rev = reversed(equation.rstrip())
 
+    # The transition will be the operator (+, -, *,  or /)
     second_part = []
     transition = []
 
+    # Encapsulate an ending parenthetical equation  
     nesting = 0
     for char in rev:
         if char == ')':
@@ -25,6 +29,8 @@ def evaluate_equation(equation):
             break
         second_part.append(char)
 
+    # Multiplication and division have higher priority,
+    # So find next plus or minus sign first
     if not char in '+-':
         for char in rev:
             if char in '+-)':
@@ -37,6 +43,8 @@ def evaluate_equation(equation):
     else:
         op = None
 
+    # If there is no plus or minus sign between end of first part and
+    # beginning of second part, find multiplicaton or division sign
     if not op:
         first_part = []
         for char in transition:
@@ -54,6 +62,7 @@ def evaluate_equation(equation):
     if second_part[0] == '(':
         second_part = second_part[1:-1]
 
+    # If entire equation in parentheses
     if not first_part:
         return evaluate_equation(second_part)
 
