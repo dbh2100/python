@@ -4,15 +4,21 @@ import re
 
 # Regular expression patterns
 PARENTHESIS_RE = re.compile(r'\( [^()]* \)', flags=re.VERBOSE)
-MULT_DIV_RE = re.compile(r'(-?\d+) \s* ([*/]) \s* (-?\d+)', flags=re.VERBOSE)
-ADD_SUB_RE = re.compile(r'(-?\d+) \s* ([+-]) \s* (-?\d+)', flags=re.VERBOSE)
+NUMBER_PATTERN = r'-? \d+ ([.]\d*)?'
+MULT_DIV_RE = re.compile(
+    rf'({NUMBER_PATTERN}) \s* ([*/]) \s* ({NUMBER_PATTERN})', flags=re.VERBOSE)
+ADD_SUB_RE = re.compile(
+    rf'({NUMBER_PATTERN}) \s* ([+-]) \s* ({NUMBER_PATTERN})', flags=re.VERBOSE
+)
 
 
 def _evaluate_binary(match_obj):
 
-    num1 = int(match_obj.group(1))
-    op = match_obj.group(2)
-    num2 = int(match_obj.group(3))
+    # Group 2 is the decimal point and following digits, or none
+    num1_str, num2_str = map(match_obj.group, (1, 4))
+    num1 = float(num1_str) if '.' in num1_str else int(num1_str)
+    num2 = float(num2_str) if '.' in num2_str else int(num2_str)
+    op = match_obj.group(3)
 
     if op == '+':
         return str(num1 + num2)
@@ -30,7 +36,7 @@ def _evaluate_binary(match_obj):
 
 
 def evaluate_equation_regex(equation):
-    """Evaluate an equation of integers using regular expressions"""
+    """Evaluate a mathematical equation using regular expressions"""
 
     # If used recursively, argument would be regex match object
     # so convert to string and remove leading and trailing parentheses
@@ -51,7 +57,12 @@ def evaluate_equation_regex(equation):
     while ADD_SUB_RE.search(equation):
         equation = ADD_SUB_RE.sub(_evaluate_binary, equation)
 
-    return equation if return_string else int(equation)
+    # If function called recursively, keep number as string
+    if return_string:
+        return equation
+
+    # Otherwise, return number in appropriate format
+    return float(equation) if '.' in equation else int(equation)
 
 
 def evaluate_equation(equation):
@@ -152,5 +163,9 @@ if __name__ == '__main__':
             print(f'evaluate_equation_regex: {evaluate_equation_regex(eq)}')
             print(f'Expected: {eval(eq)}')
             raise
+
+    # Test equation with floating-point numbers
+    float_eq = '3.2 - 10 * (4.9 + 8.5)'
+    assert evaluate_equation_regex(float_eq) == eval(float_eq)
 
     print('All tests pass')
