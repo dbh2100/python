@@ -2,7 +2,7 @@
 
 # Python Repository
 
-This repository contains several Python projects I have worked on in my spare time over the past several years, including
+This repository contains several Python projects I have worked on in my spare time over the years, including
 
 * Python number type representations
   * [Quaternions](https://github.com/dbh2100/python/tree/main/quaternion)
