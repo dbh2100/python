@@ -1,29 +1,17 @@
+"""Defines functions to be applied to lists and other types of arrays"""
+
 from operator import mul
 from functools import reduce
 from collections.abc import Sequence
 from itertools import chain
 from typing import Any
 
-def reshape0(arr: Sequence[Any], indexes: Sequence[int]) -> Sequence[Any]:
-
-    n, remaining = indexes[0], indexes[1:]
-
-    if not remaining:
-        return arr
-
-    result = []
-    p = reduce(mul, remaining)
-    i = 0
-
-    for _ in range(n):
-        component = reshape(arr[i:i+p], remaining)
-        result.append(component)
-        i += p
-
-    return result
 
 def reshape(arr: Sequence[Any], dims: Sequence[int]) -> Sequence[Any]:
-    """Reshape array arr to dimensions dims"""
+    """Reshape array arr to dimensions dims
+
+    Returns an array of the same type as arr
+    """
 
     if not isinstance(arr, Sequence):
         raise ValueError('Input array must be a sequence')
@@ -47,7 +35,7 @@ def reshape(arr: Sequence[Any], dims: Sequence[int]) -> Sequence[Any]:
 
     # Separate array into sections and recusively resize
     # the sections based on the remaining dimensions
-    new_array = list()
+    new_array = []
     for i in range(0, n, sn):
         new_array.append(reshape(arr[i:i+sn], rem_dims))
 
