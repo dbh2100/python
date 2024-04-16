@@ -1,32 +1,38 @@
-'''Construct min heap from scratch
-from min_heap import add_to_heap
-from min_heap import convert_to_heap
-from min_heap import pop_from_heap
-'''
+"""Construct min heap from scratch"""
+
 
 def get_parent_index(i):
+    """Return index of heap parent for index i"""
+
     # index is odd
     if i % 2:
         return int((i - 1) / 2)
+
     # index is even
     return int((i - 2) / 2)
 
+
 def get_child_indices(i):
+    """Return index of heap children for index i"""
     return 2 * i + 1, 2 * i + 2
 
+
 def get_children(arr, i):
+    """Return child elements for heap index i"""
     ci1, ci2 = get_child_indices(i)
     try:
         child1 = arr[ci1]
     except IndexError:
-        return list()
+        return []
     try:
         child2 = arr[ci2]
         return [child1, child2]
     except IndexError:
         return [child1]
 
-def heapify(arr: list, i: int):
+
+def heapify(arr, i):
+    """Convert list to heap at index i"""
 
     n = len(arr)
     ci1, ci2 = get_child_indices(i)
@@ -37,12 +43,14 @@ def heapify(arr: list, i: int):
 
     if ci2 < n and arr[ci2] < arr[si]:
         si = ci2
-    
+
     if i != si:
         arr[i], arr[si] = arr[si], arr[i]
         heapify(arr, si)
 
-def convert_to_heap(arr: list):
+
+def convert_to_heap(arr):
+    """Convert list to heap"""
 
     n = len(arr)
     n2 = int(n // 2)
@@ -50,7 +58,8 @@ def convert_to_heap(arr: list):
     for i in range(n2, -1, -1):
         heapify(arr, i)
 
-def add_to_heap(arr: list, elem):
+def add_to_heap(arr, elem):
+    """Add elem to heap arr while preserving the heap"""
 
     # Find array length
     n = len(arr)
@@ -68,7 +77,8 @@ def add_to_heap(arr: list, elem):
         n = i
         i = get_parent_index(n)
 
-def pop_from_heap(arr: list):
+def pop_from_heap(arr):
+    """Remove smallest element from heap arr while preserving the heap"""
 
     # Switch first and last element
     arr[0], arr[-1] = arr[-1], arr[0]
