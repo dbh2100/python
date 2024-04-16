@@ -2,21 +2,37 @@
 
 from collections import deque
 
-class _RubiksCubeFace:
+class _CubeFace:
 
-    __slots__ = ['_squares', 'top', 'bottom', 'left', 'right']
+    __slots__ = ['_squares', 'top', 'bottom', 'left', 'right', 'back']
 
-    def __init__(self, color) -> None:
+    def __init__(self, size, color=None, colors=None, recursion=False):
 
+        # Set each face square to initial color provided in constructor
         squares = []
-        for _ in range(3):
-            squares.append(3 * [color])
+        color = color or colors[0]
+        for _ in range(size):
+            squares.append(size * [color])
         self._squares = squares
 
-        # Set adjacent squares in RubiksCube initializer
-        self.top, self.bottom, self.left, self.right = None, None, None, None
+        # Do not create other faces if constructor called recursively
+        if recursion:
+            return
 
-    def __repr__(self) -> str:
+        # Create other faces and set their connections
+        self.top    = top    = _CubeFace(size, color=colors[1], recursion=True)
+        self.bottom = bottom = _CubeFace(size, color=colors[2], recursion=True)
+        self.left   = left   = _CubeFace(size, color=colors[3], recursion=True)
+        self.right  = right  = _CubeFace(size, color=colors[4], recursion=True)
+        back                 = _CubeFace(size, color=colors[5], recursion=True)
+
+        top.top, top.bottom, top.left, top.right             = left, right, self, back
+        bottom.top, bottom.bottom, bottom.left, bottom.right = right, left, back, self
+        left.top, left.bottom, left.left, left.right         = self, back, top, bottom
+        right.top, right.bottom, right.left, right.right     = back, self, bottom, top
+        back.top, back.bottom, back.left, back.right         = bottom, top, right, left
+
+    def __repr__(self):
         border = '\n _ _ _ \n'
         rows = ['|' + '|'.join(self[i]) + '|' for i in range(3)]
         return border + border.join(rows) + border
@@ -100,57 +116,50 @@ class _RubiksCubeFace:
         self.outer_edge = outer_edge_colors
 
     def all_same_color(self):
+        """Check if all the face's squares are the same color"""
         return len(set(self[0] + self[1] + self[2])) == 1
 
 
 class RubiksCube:
     """Python class representing a Rubik's cube"""
 
-    __slots__ = ['faces']
+    COLORS = ['red', 'blue', 'green', 'yellow', 'white', 'orange']
 
-    def __init__(self) -> None:
-        colors = ['R', 'B', 'G', 'Y', 'W', 'O']
-        self.faces = [_RubiksCubeFace(color) for color in colors]
-        self.set_adjacent(*self.faces)
+    __slots__ = ['_size', '_faces'] + COLORS
 
-    def set_adjacent(self, target_face, top, bottom, left, right, back):
-        """Recursively set the adjacent faces for the target face
-        and the other cube faces
-        """
+    def __init__(self, size=3) -> None:
 
-        target_face.top = top
-        target_face.bottom = bottom
-        target_face.left = left
-        target_face.right = right
+        self._size = size
 
-        # Check if top.left and bottom.right are already set to avoid infinite recursion
-        if top.left is None:
-            self.set_adjacent(top, left, right, target_face, back, bottom)
-        if bottom.right is None:
-            self.set_adjacent(bottom, right, left, back, target_face, top)
+        colors = [color[0].upper() for color in self.COLORS]
+
+        self._faces = 6 * [None]
+        self.red = self._faces[0] = face0 = _CubeFace(size, colors=colors)
+        self.blue = self._faces[1] = face0.top
+        self.green = self._faces[2] = face0.bottom
+        self.yellow = self._faces[3] = face0.left
+        self.white = self._faces[4] = face0.right
+        self.orange = self._faces[5] = face0.top.right
+
+    def __repr__(self):
+        return '\n'.join(str(face) for face in self._faces)
 
     def is_solved(self):
         """Determine if all squares on each face have same color"""
-        return all(face.all_same_color() for face in self.faces)
+        return all(face.all_same_color() for face in self._faces)
 
 
 if __name__ == '__main__':
 
     cube = RubiksCube()
-    print(cube.is_solved())
+    print('Cube is initally solved:', cube.is_solved())
 
-    cube.faces[0].rotate('left')
-    for face in cube.faces:
-        print(face)
-    print(cube.is_solved())
+    cube.red.rotate('left')
+    print(cube)
+    print('Cube is solved after left rotation:', cube.is_solved())
 
     print(50 * '*')
 
-    cube.faces[0].rotate('right')
-    for face in cube.faces:
-        print(face)
-    print(cube.is_solved())
-
-    for i, face in enumerate(cube.faces):
-        for attr in ['top', 'bottom', 'left', 'right']:
-            print(i, attr, hasattr(face, attr))
+    cube.red.rotate('right')
+    print(cube)
+    print('Cube is solved after right rotation:', cube.is_solved())
