@@ -69,6 +69,7 @@ def topologic_sort(graph: DAG, data_structure: type):
     """Uses Kahn's algorithm
     data_structure can be list, set, or deque
     """
+
     sorted_nodes = []
     nodes = data_structure(graph.orphans)
     visited = set()
