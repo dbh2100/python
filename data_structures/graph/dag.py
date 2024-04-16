@@ -2,7 +2,6 @@
 
 from collections import deque
 import functools
-from math import comb
 from typing import List, Set
 import itertools
 import operator
@@ -18,24 +17,28 @@ class GraphNode:
         return f'Node_{self.name}'
 
     def add_child(self, child):
+        """Add an out-connection to the node"""
         self.children.add(child)
 
     def remove_child(self, child):
+        """Remove a child node"""
         try:
             self.children.remove(child)
         except KeyError:
             pass
 
+
 NodeSetList = List[Set[GraphNode]]
 
+
 class DAG:
-    '''Directed acyclic graph'''
+    """Directed acyclic graph"""
 
     def __init__(self, *orphans: GraphNode):
         self.orphans = list(orphans)
 
     def check_dag(self):
-        '''Check if graph has acyclic property'''
+        """Check if graph has acyclic property"""
 
         visited = set()
 
@@ -61,17 +64,18 @@ class DAG:
 
         return True
 
+
 def topologic_sort(graph: DAG, data_structure: type):
-    '''Uses Kahn's algorithm
+    """Uses Kahn's algorithm
     data_structure can be list, set, or deque
-    '''
-    sorted = list()
+    """
+    sorted_nodes = []
     nodes = data_structure(graph.orphans)
     visited = set()
 
     while nodes:
         node = nodes.pop()
-        sorted.append(node)
+        sorted_nodes.append(node)
         for child in node.children:
             if child in visited:
                 continue
@@ -82,22 +86,30 @@ def topologic_sort(graph: DAG, data_structure: type):
             if data_structure == deque:
                 nodes.appendleft(child)
             visited.add(child)
-    
-    return sorted
+
+    return sorted_nodes
+
 
 def check_node_sets(set1: Set[GraphNode], set2: Set[GraphNode]) -> bool:
+    """Check that each node in each set is not a child of a node
+    in the other set
+    """
     for node1, node2 in itertools.product(set1, set2):
         if node1 in node2.children or node2 in node1.children:
             return False
     return True
 
+
 def combine_node_sets(node_sets: NodeSetList) -> NodeSetList:
+    """Combine the sets into one larger node set"""
     for set1, set2 in itertools.combinations(node_sets, 2):
         if check_node_sets(set1, set2):
             set1 |= set2
     return node_sets
 
+
 def combine_node_sets_2(node_sets: NodeSetList) -> NodeSetList:
+    """Alternate function for combining node sets"""
 
     n = len(node_sets)
 
@@ -110,11 +122,12 @@ def combine_node_sets_2(node_sets: NodeSetList) -> NodeSetList:
             if check_node_sets(set1, set2):
                 node_sets.append(set1 | set2)
         i += 1
-    
+
     return node_sets
 
+
 def get_indirect_data(node: GraphNode) -> NodeSetList:
-    '''Return sets of nodes which share no direct connections'''
+    """Return sets of nodes which share no direct connections"""
 
     node_sets = [set([node])]
 
@@ -132,9 +145,13 @@ def get_indirect_data(node: GraphNode) -> NodeSetList:
     node_sets.extend(itertools.chain(*gc_sets))
     return combine_node_sets(node_sets)
 
-def get_indirect_node_number(graph: DAG) -> int:
 
-    node_sets = list()
+def get_indirect_node_number(graph: DAG) -> int:
+    """Calculate the maximum number of nodes in a set
+    in which no two nodes are adjacent
+    """
+
+    node_sets = []
 
     for orphan in graph.orphans:
         node_sets.extend(get_indirect_data(orphan))
@@ -143,8 +160,6 @@ def get_indirect_node_number(graph: DAG) -> int:
 
     node_sets = combine_node_sets_2(node_sets)
 
-    # print(node_sets)
-           
     return max(map(len, node_sets))
 
 
@@ -188,4 +203,3 @@ if __name__ == '__main__':
     # print(topologic_sort(graph1, deque))
     # print(topologic_sort(graph1, list))
     # print(topologic_sort(graph1, set))
-
