@@ -1,18 +1,22 @@
-red = 1
-black = 0
+"""Define a red-black tree"""
 
-class Node(object):
-    
+RED = 1
+BLACK = 0
+
+class Node:
+    """Node for the red-black tree"""
+
     def __init__(self, k, v):
         self.key = k
         self.value = v
-        self.color = red
+        self.color = RED
         self.left = None
         self.right = None
         self.is_root = False
-    
+
     def insert(self, k, v):
-        
+        """Insert a node with key k and value v in the node's subtree"""
+
         if k == self.key: return
         if k < self.key:
             if self.left is None:
@@ -24,63 +28,73 @@ class Node(object):
                 self.right = Node(k, v)
             else:
                 self.right.insert(k, v)
-        
+
         if not self.left is None and not self.right is None:
             
-            if self.left.color == red and self.right.color == red:
+            if self.left.color == RED and self.right.color == RED:
                 for node in [self.left.left, self.left.right, self.right.left, self.right.right]:
                     if not node is None:
-                        self.color = red
-                        self.left.color = black
-                        self.right.color = black
-        
-            if self.left.color == red and self.right.color == black:
+                        self.color = RED
+                        self.left.color = BLACK
+                        self.right.color = BLACK
+
+            if self.left.color == RED and self.right.color == BLACK:
                 if not self.left.left is None:
                     self.left.key, self.left.value, self.left.left, self.left.right.key, self.left.right.value = \
                     self.left.left.key, self.left.left.value, None, self.left.key, self.left.value
                 if not self.left.right is None:
                     self.left.key, self.left.value, self.left.right, self.left.left.key, self.left.left.value = \
                         self.left.right.key, self.left.right.value, None, self.left.key, self.left.value
-        
-        if self.color == red:
+
+        if self.color == RED:
             if not self.left is None:
-                self.left.color = black
+                self.left.color = BLACK
             if not self.right is None:
-                self.right.color = black
-        
+                self.right.color = BLACK
+
         if self.is_root:
-            self.color = black
+            self.color = BLACK
 
     def retrieve(self, k):
+        """Retrive the value associated with key k"""
         if k == self.key:
             return self.value
         if k < self.key:
-            if self.left is None: return
+            if self.left is None:
+                return None
             return self.left.retrieve(k)
-        if self.right is None: return
+        if self.right is None:
+            return None
         return self.right.retrieve(k)
 
-class Tree(object):
-    
+
+class RedBlackTree:
+    """Red-black tree"""
+
     def __init__(self):
         self.head_node = None
-    
+
     def insert(self, k, v):
+        """Insert a node with key k and value v in the tree"""
         if self.head_node is None:
             self.head_node = Node(k, v)
             self.head_node.is_root = True
-            self.head_node.color = black
+            self.head_node.color = BLACK
         else:
             self.head_node.insert(k, v)
 
     def retrieve(self, k):
+        """Retrive the value associated with key k"""
         return self.head_node.retrieve(k)
 
-tree = Tree()
 
-tree.insert(13, 100)
-tree.insert(27, 2)
-tree.insert(4, 24)
-tree.insert(7, 4)
+if __name__ == '__main__':
 
-print(tree.retrieve(7))
+    tree = RedBlackTree()
+
+    tree.insert(13, 100)
+    tree.insert(27, 2)
+    tree.insert(4, 24)
+    tree.insert(7, 4)
+
+    print(tree.retrieve(7))

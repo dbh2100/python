@@ -8,8 +8,8 @@ def insert_value(node, value):
     # If tree/subtree is empty dict, initialize
     if not node:
         node['value'] = value
-        node['left'] = dict()
-        node['right'] = dict()
+        node['left'] = {}
+        node['right'] = {}
         node['size'] = 1
 
     # Otherwise, insert value into appropriate subtree
@@ -55,7 +55,7 @@ def find_closest(node, larger=False, remove_node=False):
             parent[direction] = child[direction]
         else:
             parent[other] = child[direction]
-        child[direction] = dict()
+        child[direction] = {}
         calculate_size(parent)
         calculate_size(child)
 
@@ -74,7 +74,7 @@ def remove_value(node, value):
     # If node has no children, replace it with empty dict
     if node['value'] == value:
         if not node['left'] and not node['right']:
-            return dict()
+            return {}
         target_node = find_closest(node, larger=not node['left'], remove_node=True)
         target_node['left'], target_node['right'] = node['left'], node['right']
         calculate_size(target_node)
@@ -121,7 +121,7 @@ def rebalance(head_node):
         # Make previous head new head's subtree in other direction
         new_head[direction] = head_node[direction]
         new_head[other] = head_node
-        head_node[direction] = dict()
+        head_node[direction] = {}
         calculate_size(head_node)
         calculate_size(new_head)
 
@@ -133,7 +133,7 @@ def rebalance(head_node):
 
 if __name__ == '__main__':
 
-    tree = dict()
+    tree = {}
     nums = [15, 10, 3, 8, 2, 6, 12, 4, 5, 3, 14, 3, 23, 1, 19]
     for num in nums:
         insert_value(tree, num)

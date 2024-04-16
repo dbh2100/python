@@ -8,6 +8,7 @@ from typing import List, Set
 import itertools
 
 class GraphNode:
+    """Node for DAG"""
 
     def __init__(self, name):
         self.name = name
@@ -17,18 +18,19 @@ class GraphNode:
         return f'Node_{self.name}'
 
     def add_child(self, child):
+        """Add an out-connection to the node"""
         self.children.add(child)
 
 class DAG:
-    '''Directed acyclic graph'''
+    """Directed acyclic graph"""
 
     def __init__(self, *orphans: GraphNode):
         self.orphans = list(orphans)
 
     def check_dag(self):
-        '''Check if graph has acyclic property'''
+        """Check if graph has acyclic property"""
 
-        visited_list = list()
+        visited_list = []
         visited_map = defaultdict(set)
 
         for i, orphan in enumerate(self.orphans):
@@ -57,16 +59,17 @@ class DAG:
         return True
 
 def topologic_sort(graph: DAG, data_structure: type):
-    '''Uses Kahn's algorithm
+    """Uses Kahn's algorithm
     data_structure can be list, set, or deque
-    '''
-    sorted = list()
+    """
+
+    sorted_nodes = []
     nodes = data_structure(graph.orphans)
     visited = set()
 
     while nodes:
         node = nodes.pop()
-        sorted.append(node)
+        sorted_nodes.append(node)
         for child in node.children:
             if child in visited:
                 continue
@@ -77,11 +80,11 @@ def topologic_sort(graph: DAG, data_structure: type):
             if data_structure == deque:
                 nodes.appendleft(child)
             visited.add(child)
-    
-    return sorted
+
+    return sorted_nodes
 
 def get_indirect_nodes(orphan: GraphNode) -> List[Set[GraphNode]]:
-    '''Return sets of nodes which share no direct connections'''
+    """Return sets of nodes which share no direct connections"""
 
     node_sets = [set(), set()]
 
@@ -90,16 +93,19 @@ def get_indirect_nodes(orphan: GraphNode) -> List[Set[GraphNode]]:
     current_level = [orphan]
 
     while current_level:
-        next_level = list()
+        next_level = []
         for node in current_level:
             node_sets[set_index].add(node)
             next_level.extend(node.children)
         current_level = next_level
         set_index = 1 - set_index
-    
+
     return node_sets
 
 def get_indirect_node_number(graph: DAG) -> int:
+    """Calculate the maximum number of nodes in a set
+    in which no two nodes are adjacent
+    """
 
     set1, set2 = set(), set()
 
@@ -145,15 +151,15 @@ if __name__ == '__main__':
 
     print(get_indirect_nodes(node7))
 
-    graph = DAG(node5, node7, node3, node6)
+    graph1 = DAG(node5, node7, node3, node6)
 
-    print(topologic_sort(graph, deque))
+    print(topologic_sort(graph1, deque))
 
-    print(get_indirect_node_number(graph))
+    print(get_indirect_node_number(graph1))
 
-    print(graph.check_dag())
+    print(graph1.check_dag())
     node8.add_child(node9)
-    print(graph.check_dag())
+    print(graph1.check_dag())
 
     o1 = GraphNode('O1')
     o2 = GraphNode('O2')
