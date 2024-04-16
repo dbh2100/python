@@ -66,8 +66,10 @@ def evaluate_equation_regex(equation):
 
 
 def evaluate_equation(equation):
-    """Evaluate an equation of integers just using builtins"""
+    """Evaluate a mathematical equation just using Python builtins"""
 
+    if '.' in equation and equation.replace('.', '').isnumeric():
+        return float(equation)
     if equation.isnumeric():
         return int(equation)
 
@@ -166,6 +168,7 @@ if __name__ == '__main__':
 
     # Test equation with floating-point numbers
     float_eq = '3.2 - 10 * (4.9 + 8.5)'
+    assert evaluate_equation(float_eq) == eval(float_eq)
     assert evaluate_equation_regex(float_eq) == eval(float_eq)
 
     print('All tests pass')
