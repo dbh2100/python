@@ -22,10 +22,11 @@ class FrozenDict(Mapping):
 
     @classmethod
     def fromkeys(cls, *args, **kwargs):
+        """Replacates dict's fromkeys method to return FrozenDict object"""
         return cls(dict.fromkeys(*args, **kwargs))
 
     def __hash__(self) -> int:
         return hash(tuple(self.items()))
 
     def __repr__(self) -> str:
-        return '%s(%s)' % self.__class__.__name__, self._dict
+        return f'{self.__class__.__name__}({self._dict})'

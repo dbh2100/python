@@ -1,27 +1,35 @@
+"""Unitests for FrozenDict class"""
+
 import unittest
 from frozen_dict import FrozenDict
 
 
 class FrozenDictTest(unittest.TestCase):
+    """Test FrozenDict class"""
 
     def test_empty_dict(self):
-        self.assertEqual(FrozenDict(), dict())
+        """Test calling constructor with no arguments"""
+        self.assertEqual(FrozenDict(), {})
 
     def test_pass_dict_to_constructor(self):
+        """Test calling constructor with dict as argument"""
         d = {10: 4, 'x': None, (4, 3): 8}
         self.assertEqual(FrozenDict(d), d)
 
     def test_kwargs(self):
-        d = dict(x=100, y=None, abc=[2, 3, 10])
+        """Test calling constructor with key word arguments"""
+        d = {'x': 100, 'y': None, 'abc': [2, 3, 10]}
         fd = FrozenDict(x=100, y=None, abc=[2, 3, 10])
         self.assertEqual(fd, d)
 
     def test_fromkeys(self):
+        """Test FrozenDict's fromkeys method"""
         d = dict.fromkeys([3, 'x', 77], 'default value')
         fd = FrozenDict.fromkeys([3, 'x', 77], 'default value')
         self.assertEqual(fd, d)
 
     def test_immutability(self):
+        """Test that FrozenDict instance is immutable"""
 
         fd = FrozenDict(x=100, y=None, abc=[2, 3, 10])
 
@@ -41,6 +49,7 @@ class FrozenDictTest(unittest.TestCase):
             fd.update('x', 7)
 
     def test_hashability(self):
+        """Test that FrozenDict instance is hashable"""
         fd = FrozenDict(x=100, y=None, abc='xyz')
         self.assertIsInstance(hash(fd), int)
 
