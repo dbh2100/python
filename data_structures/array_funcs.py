@@ -62,8 +62,8 @@ def get_element(arr, indices):
 
 def get_min_path(arr, indices=None):
     """Get the shortest path from the element defined by indices
-    to the lower-right corner of the array arr
-    arr can be of any number of dimensions dimensions
+    to the lower-right corner of an n-dimensional array arr
+    arr can be of any number of dimensions
     """
 
     # Find dimensions of array
