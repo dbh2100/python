@@ -9,11 +9,10 @@ class _CubeFace:
     def __init__(self, size, color=None, colors=None, recursion=False):
 
         # Set each face square to initial color provided in constructor
-        squares = []
+        self._squares = squares = []
         color = color or colors[0]
         for _ in range(size):
             squares.append(size * [color])
-        self._squares = squares
 
         # Do not create other faces if constructor called recursively
         if recursion:
@@ -119,6 +118,16 @@ class _CubeFace:
         """Check if all the face's squares are the same color"""
         return len(set(self[0] + self[1] + self[2])) == 1
 
+    def reset_color(self):
+        """Switch the squares' color to that of the center square"""
+        squares = self._squares
+        n = len(squares)
+        m = n // 2
+        color = squares[m][m]
+        for row in squares:
+            for i in range(n):
+                row[i] = color
+
 
 class RubiksCube:
     """Python class representing a Rubik's cube"""
@@ -129,17 +138,15 @@ class RubiksCube:
 
     def __init__(self, size=3) -> None:
 
-        self._size = size
-
         colors = [color[0].upper() for color in self.COLORS]
 
-        self._faces = 6 * [None]
-        self.red = self._faces[0] = face0 = _CubeFace(size, colors=colors)
-        self.blue = self._faces[1] = face0.top
-        self.green = self._faces[2] = face0.bottom
-        self.yellow = self._faces[3] = face0.left
-        self.white = self._faces[4] = face0.right
-        self.orange = self._faces[5] = face0.top.right
+        faces = self._faces = 6 * [None]
+        self.red = faces[0] = face0 = _CubeFace(size, colors=colors)
+        self.blue = faces[1] = face0.top
+        self.green = faces[2] = face0.bottom
+        self.yellow = faces[3] = face0.left
+        self.white = faces[4] = face0.right
+        self.orange = faces[5] = face0.top.right
 
     def __repr__(self):
         return '\n'.join(str(face) for face in self._faces)
@@ -148,18 +155,45 @@ class RubiksCube:
         """Determine if all squares on each face have same color"""
         return all(face.all_same_color() for face in self._faces)
 
+    def reset(self):
+        """Revert all the squares back to their original color"""
+        for face in self._faces:
+            face.reset_color()
+
 
 if __name__ == '__main__':
 
     cube = RubiksCube()
     print('Cube is initally solved:', cube.is_solved())
 
+    # Rotate the red face to the left
     cube.red.rotate('left')
+    print('Cube after left rotation:')
     print(cube)
     print('Cube is solved after left rotation:', cube.is_solved())
 
     print(50 * '*')
 
+    # Rotate the red face to the right
     cube.red.rotate('right')
+    print('Cube after right rotation:')
     print(cube)
     print('Cube is solved after right rotation:', cube.is_solved())
+
+    print(50 * '*')
+
+    # Scramble the cube to test reset
+    cube.blue.rotate('right')
+    cube.white.rotate('left')
+    cube.yellow.rotate('left')
+    print('Cube after scramble')
+    print(cube)
+    print('Cube is solved after scramble:', cube.is_solved())
+
+    print(50 * '*')
+
+    # Reset the cube
+    cube.reset()
+    print('Cube after reset')
+    print(cube)
+    print('Cube is solved after reset:', cube.is_solved())
