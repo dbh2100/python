@@ -6,24 +6,24 @@ class _CubeFace:
 
     __slots__ = ['_squares', 'top', 'bottom', 'left', 'right', 'back']
 
-    def __init__(self, size, color=None, colors=None, recursion=False):
+    def __init__(self, color=None, colors=None, recursion=False):
 
         # Set each face square to initial color provided in constructor
         self._squares = squares = []
         color = color or colors[0]
-        for _ in range(size):
-            squares.append(size * [color])
+        for _ in range(3):
+            squares.append(3 * [color])
 
         # Do not create other faces if constructor called recursively
         if recursion:
             return
 
         # Create other faces and set their connections
-        self.top    = top    = _CubeFace(size, color=colors[1], recursion=True)
-        self.bottom = bottom = _CubeFace(size, color=colors[2], recursion=True)
-        self.left   = left   = _CubeFace(size, color=colors[3], recursion=True)
-        self.right  = right  = _CubeFace(size, color=colors[4], recursion=True)
-        back                 = _CubeFace(size, color=colors[5], recursion=True)
+        self.top    = top    = _CubeFace(color=colors[1], recursion=True)
+        self.bottom = bottom = _CubeFace(color=colors[2], recursion=True)
+        self.left   = left   = _CubeFace(color=colors[3], recursion=True)
+        self.right  = right  = _CubeFace(color=colors[4], recursion=True)
+        back                 = _CubeFace(color=colors[5], recursion=True)
 
         top.top, top.bottom, top.left, top.right             = left, right, self, back
         bottom.top, bottom.bottom, bottom.left, bottom.right = right, left, back, self
@@ -121,11 +121,9 @@ class _CubeFace:
     def reset_color(self):
         """Switch the squares' color to that of the center square"""
         squares = self._squares
-        n = len(squares)
-        m = n // 2
-        color = squares[m][m]
+        color = squares[1][1]
         for row in squares:
-            for i in range(n):
+            for i in range(3):
                 row[i] = color
 
 
@@ -134,14 +132,14 @@ class RubiksCube:
 
     COLORS = ['red', 'blue', 'green', 'yellow', 'white', 'orange']
 
-    __slots__ = ['_size', '_faces'] + COLORS
+    __slots__ = ['_faces'] + COLORS
 
-    def __init__(self, size=3) -> None:
+    def __init__(self) -> None:
 
         colors = [color[0].upper() for color in self.COLORS]
 
         faces = self._faces = 6 * [None]
-        self.red = faces[0] = face0 = _CubeFace(size, colors=colors)
+        self.red = faces[0] = face0 = _CubeFace(colors=colors)
         self.blue = faces[1] = face0.top
         self.green = faces[2] = face0.bottom
         self.yellow = faces[3] = face0.left
