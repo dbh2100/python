@@ -151,10 +151,11 @@ class _CubeFace:
     def all_same_color(self):
         """Check if all the face's squares are the same color"""
         size_range = range(self._size)
-        initial_color = self._initial_color
+        squares = self._squares
+        color = squares[0][0]
         for i in size_range:
             for j in size_range:
-                if self[i][j] != initial_color:
+                if squares[i][j] != color:
                     return False
         return True
 
