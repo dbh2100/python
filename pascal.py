@@ -24,18 +24,23 @@ def gen_pascal_tee():
     """Generate the rows of Pascal's trangle using tee from itertools"""
 
     def _row_gen():
+
         yield [1]
         row_num = 1
+
         while True:
+
             try:
                 prev_row = next(prev_row_gen)
             except StopIteration:
                 return
+
             next_row = [1]
             for col in range(1, row_num):
                 next_row.append(prev_row[col-1] + prev_row[col])
             next_row.append(1)
             yield next_row
+
             row_num += 1
 
     row_it = _row_gen()
