@@ -9,10 +9,10 @@ This repository contains several Python projects I have worked on in my spare ti
   * [Aleph numbers](https://github.com/dbh2100/python/tree/main/aleph_numbers)
 
 * Python representations of 2- and 3-dimensional games
-  * [2048](https://github.com/dbh2100/python/blob/main/board_games/game_2048.py)
-  * [Connect4](https://github.com/dbh2100/python/blob/main/board_games/connect4.py)
-  * [Othello](https://github.com/dbh2100/python/blob/main/board_games/othello.py)
-  * [Rubik's Cube](https://github.com/dbh2100/python/blob/main/rubiks_cube.py)
+  * [2048](https://github.com/dbh2100/python/blob/main/games/game_2048.py)
+  * [Connect4](https://github.com/dbh2100/python/blob/main/games/connect4.py)
+  * [Othello](https://github.com/dbh2100/python/blob/main/games/othello.py)
+  * [Rubik's Cube](https://github.com/dbh2100/python/blob/main/games/rubiks_cube.py)
 
 * [Sorting algorithms](https://github.com/dbh2100/python/blob/main/sorting_algos.py)
   
