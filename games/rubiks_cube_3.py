@@ -96,7 +96,7 @@ class _CubeFace:
     def rotate(self, direction):
         """Rotate face
 
-        direction is either 'left' or 'right'
+        direction is either 'left' (counterclockwise) or 'right' (clockwise)
         """
 
         inner_edge_colors = deque(self.inner_edge)

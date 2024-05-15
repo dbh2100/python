@@ -121,9 +121,9 @@ class _CubeFace:
 
 
     def rotate(self, direction, depth=1):
-        """Rotate face up to deph
+        """Rotate face up to depth
 
-        direction is either 'left' or 'right'
+        direction is either 'left' (counterclockwise) or 'right' (clockwise)
         depth should be between 1 and half the cube's size (edge length)
         """
 
