@@ -7,6 +7,7 @@ from collections import deque, defaultdict
 from typing import List, Set
 import itertools
 
+
 class GraphNode:
     """Node for DAG"""
 
@@ -20,6 +21,7 @@ class GraphNode:
     def add_child(self, child):
         """Add an out-connection to the node"""
         self.children.add(child)
+
 
 class DAG:
     """Directed acyclic graph"""
@@ -58,6 +60,7 @@ class DAG:
 
         return True
 
+
 def topologic_sort(graph: DAG, data_structure: type):
     """Uses Kahn's algorithm
     data_structure can be list, set, or deque
@@ -83,6 +86,7 @@ def topologic_sort(graph: DAG, data_structure: type):
 
     return sorted_nodes
 
+
 def get_indirect_nodes(orphan: GraphNode) -> List[Set[GraphNode]]:
     """Return sets of nodes which share no direct connections"""
 
@@ -101,6 +105,7 @@ def get_indirect_nodes(orphan: GraphNode) -> List[Set[GraphNode]]:
         set_index = 1 - set_index
 
     return node_sets
+
 
 def get_indirect_node_number(graph: DAG) -> int:
     """Calculate the maximum number of nodes in a set
