@@ -17,7 +17,8 @@ class Node:
     def insert(self, k, v):
         """Insert a node with key k and value v in the node's subtree"""
 
-        if k == self.key: return
+        if k == self.key:
+            return
         if k < self.key:
             if self.left is None:
                 self.left = Node(k, v)
@@ -29,27 +30,27 @@ class Node:
             else:
                 self.right.insert(k, v)
 
-        if not self.left is None and not self.right is None:
-            
+        if self.left is not None and self.right is not None:
+
             if self.left.color == RED and self.right.color == RED:
                 for node in [self.left.left, self.left.right, self.right.left, self.right.right]:
-                    if not node is None:
+                    if node is not None:
                         self.color = RED
                         self.left.color = BLACK
                         self.right.color = BLACK
 
             if self.left.color == RED and self.right.color == BLACK:
-                if not self.left.left is None:
+                if self.left.left is not None:
                     self.left.key, self.left.value, self.left.left, self.left.right.key, self.left.right.value = \
                     self.left.left.key, self.left.left.value, None, self.left.key, self.left.value
-                if not self.left.right is None:
+                if self.left.right is not None:
                     self.left.key, self.left.value, self.left.right, self.left.left.key, self.left.left.value = \
                         self.left.right.key, self.left.right.value, None, self.left.key, self.left.value
 
         if self.color == RED:
-            if not self.left is None:
+            if self.left is not None:
                 self.left.color = BLACK
-            if not self.right is None:
+            if self.right is not None:
                 self.right.color = BLACK
 
         if self.is_root:
