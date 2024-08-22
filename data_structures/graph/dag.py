@@ -65,7 +65,7 @@ class DAG:
         return True
 
 
-def topologic_sort(graph: DAG, data_structure: type):
+def topologic_sort(graph: DAG, data_structure: type) -> List:
     """Uses Kahn's algorithm
     data_structure can be list, set, or deque
     """
