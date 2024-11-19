@@ -6,9 +6,11 @@ import operator
 
 class QuaternionicInteger(Quaternion):
 
+    '''Analogous to the Gaussian integers for complex numbers,
+    quaternionic integers are quaternions with integer coefficients.
     '''
-Analogous to the Gaussian integers for complex numbers, quaternionic integers are quaternions with integer coefficients.
-    '''
+
+    __slots__ = ()
 
     def __init__(self, *args, **kwargs):
         super(QuaternionicInteger, self).__init__(*args, **kwargs)

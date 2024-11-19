@@ -12,10 +12,11 @@ except ImportError:
     from collections import Mapping, Iterable
 
 class Quaternion(Number):
+    '''A quaternion is a number in a four-dimensional mathematical system.
+    It can be described as the sum of a scalar and a three-dimensional vector.
     '''
-A quaternion is a number in a four-dimensional mathematical system.
-It can be described as the sum of a scalar and a three-dimensional vector.
-    '''
+
+    __slots__ = ('_scalar', '_i', '_j', '_k')
 
     def __init__(self, *args, **kwargs):
         '''
