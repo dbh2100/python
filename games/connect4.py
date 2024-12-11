@@ -139,9 +139,10 @@ class Connect4:
             try:
                 j = int(j_str) - 1
             except ValueError:
+                print(f'{j_str} is not a valid column number')
                 continue
             if not 0 <= j < n:
-                print('Invalid column')
+                print(f'{j_str} is not a valid column number')
                 continue
             # If all chosen column's circles are filled,
             # user needs to choose diferent column
