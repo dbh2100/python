@@ -5,7 +5,7 @@ class Connect4:
 
     __slots__ = ('_num_rows', '_num_cols', '_circles', '_current_player')
 
-    def __init__(self, num_rows, num_cols) -> None:
+    def __init__(self, num_rows: int, num_cols: int) -> None:
         """num_rows and num_cols must be intergers of at least 4"""
 
         if not isinstance(num_rows, int) or not isinstance(num_cols, int):
@@ -20,62 +20,6 @@ class Connect4:
             circles.append(self._num_cols * [''])
         self._circles = circles
         self._current_player = 'Red'
-
-    def check_row(self, i0: int, j0: int, color: str) -> bool:
-        """i0, j0, and color are the row, column, and color of the newly-placed circle
-        Return boolean indicating whether the move ends the game
-        """
-        j_start = max(j0 - 3, 0)
-        j_end = min(j0 + 4, self._num_cols)
-        circles = self._circles
-        count = 0
-        for j in range(j_start, j_end):
-            if circles[i0][j] == color:
-                count += 1
-                if count == 4:
-                    return True
-            else:
-                count = 0
-        return False
-
-    def check_column(self, i0: int, j0: int, color: str) -> bool:
-        """i0, j0, and color are the row, column, and color of the newly-placed circle
-        Return boolean indicating whether the move ends the game
-        """
-        i_start = max(i0 - 3, 0)
-        i_end = min(i0 + 4, self._num_rows)
-        circles = self._circles
-        count = 0
-        for i in range(i_start, i_end):
-            if circles[i][j0] == color:
-                count += 1
-                if count == 4:
-                    return True
-            else:
-                count = 0
-        return False
-
-    def check_diagonals(self, i0: int, j0: int, color: str) -> bool:
-        """i0, j0, and color are the row, column, and color of the newly-placed circle
-        Return boolean indicating whether the move ends the game
-        """
-        circles = self._circles
-        m = self._num_rows
-        n = self._num_cols
-        for diag in (-1, 1):
-            count = 0
-            for di in range(-3, 4):
-                i = i0 + di
-                j = j0 + diag * di
-                if not 0 <= i < m or not 0 <= j < n:
-                    continue
-                if circles[i][j] == color:
-                    count += 1
-                    if count == 4:
-                        return True
-                else:
-                    count = 0
-        return False
 
     def is_game_over(self, i0: int, j0: int, color: str) -> bool:
         """i0, j0, and color are the row, column, and color of the newly-placed circle
