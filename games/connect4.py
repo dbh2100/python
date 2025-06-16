@@ -1,5 +1,22 @@
 """Design Connect4 Game"""
 
+from enum import Enum, auto
+
+class _Player(Enum):
+    """Represents each player and the color of their pieces"""
+    RED = 0
+    BLACK = 1
+
+
+class _Circle(Enum):
+    """Represents each circle in the game board"""
+    BLANK = auto()
+    RED = auto()
+    BLACK = auto()
+
+_CircleGrid = list[list[_Circle]]
+
+
 class Connect4:
     """Connect4 game class"""
 
@@ -15,13 +32,13 @@ class Connect4:
         self._num_rows = num_rows
         self._num_cols = num_cols
 
-        circles = []
+        circles: _CircleGrid = []
         for _ in range(self._num_rows):
-            circles.append(self._num_cols * [''])
+            circles.append(self._num_cols * [_Circle.BLANK])
         self._circles = circles
-        self._current_player = 'Red'
+        self._current_player = _Player.RED
 
-    def is_game_over(self, i0: int, j0: int, color: str) -> bool:
+    def _is_game_over(self, i0: int, j0: int, color: str) -> bool:
         """i0, j0, and color are the row, column, and color of the newly-placed circle
         Return boolean indicating whether the move ends the game
         """
@@ -39,15 +56,15 @@ class Connect4:
 
             count = 0
 
-            for factor in range(-3, 4):
+            for offset in range(-3, 4):
 
-                i = i0 + (factor * di)
-                j = j0 + (factor * dj)
+                i = i0 + (offset * di)
+                j = j0 + (offset * dj)
 
                 if not 0 <= i < m or not 0 <= j < n:
                     continue
 
-                if circles[i][j] == color:
+                if circles[i][j].name == color:
                     count += 1
                     if count == 4:
                         return True
@@ -56,30 +73,31 @@ class Connect4:
 
         return False
 
-    def place_circle(self, j: int, color: str) -> bool:
+    def _place_circle(self, j: int, color: str) -> bool:
         """Returns boolean indicating whether move ends game"""
 
-        i = 0
+        i: int = 0
         m = self._num_rows
         circles = self._circles
-        while i + 1 < m and not circles[i+1][j]:
+        print(circles[i+1][j].name)
+        while i + 1 < m and circles[i+1][j] == _Circle.BLANK:
             i += 1
-        circles[i][j] = color
+        circles[i][j] = _Circle[color]
 
         # Check if game is over
-        return self.is_game_over(i, j ,color)
+        return self._is_game_over(i, j, color)
 
     def enter_move(self) -> bool:
         """Prompt the player to pick where to place circle"""
 
-        j = -1
+        j: int = -1
         n = self._num_cols
         player = self._current_player
         circles = self._circles
 
-        msg = f'{player}, enter column to place circle(1 - {n}): '
+        msg: str = f'{player.name}, enter column to place circle(1 - {n}): '
         while not 0 <= j < n:
-            j_str = input(msg)
+            j_str: str = input(msg)
             try:
                 j = int(j_str) - 1
             except ValueError:
@@ -90,24 +108,24 @@ class Connect4:
                 continue
             # If all chosen column's circles are filled,
             # user needs to choose diferent column
-            if circles[0][j]:
+            if circles[0][j] != _Circle.BLANK:
                 print('You must choose a different column')
                 j = -1
 
         # Place circle and determine if move ends game
         # If so, display board one last time and print message
-        if self.place_circle(j, player):
+        if self._place_circle(j, player.name):
             self.display_board()
-            print(f'{player} wins!')
+            print(f'{player.name} wins!')
             return True
 
         # Check if circle can no longer be placed
-        if all(circles[0][j] for j in range(self._num_cols)):
+        if all(circles[0][j] != _Circle.BLANK for j in range(self._num_cols)):
             print('Game is a draw')
             return True
 
         # Switch player
-        self._current_player = 'Black' if player == 'Red' else 'Red'
+        self._current_player = _Player(1 - player.value)
 
         return False
 
@@ -115,6 +133,7 @@ class Connect4:
         """Display the Connect4 board"""
 
         n = self._num_cols
+        columns = range(self._num_cols)
 
         # Print 1-indexed column numbers
         print(' '.join([str(j+1).center(5) for j in range(n)]))
@@ -122,7 +141,14 @@ class Connect4:
         # Print circle values
         circles = self._circles
         for i in range(self._num_rows):
-            print('|'.join([circles[i][j].center(5) for j in range(n)]))
+            circle_display = []
+            for j in columns:
+                circle = circles[i][j]
+                if circle == _Circle.BLANK:
+                    circle_display.append(5*' ')
+                else:
+                    circle_display.append(circle.name.center(5))
+            print('|'.join(circle_display))
             print(' '.join([5 * '_' for _ in range(n)]))
 
     def play_game(self) -> None:
