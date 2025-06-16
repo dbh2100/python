@@ -79,7 +79,6 @@ class Connect4:
         i: int = 0
         m = self._num_rows
         circles = self._circles
-        print(circles[i+1][j].name)
         while i + 1 < m and circles[i+1][j] == _Circle.BLANK:
             i += 1
         circles[i][j] = _Circle[color]
