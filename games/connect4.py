@@ -119,7 +119,7 @@ class Connect4:
             return True
 
         # Check if circle can no longer be placed
-        if all(circles[0][j] != _Circle.BLANK for j in range(self._num_cols)):
+        if all(circles[0][j] != _Circle.BLANK for j in range(n)):
             print('Game is a draw')
             return True
 
