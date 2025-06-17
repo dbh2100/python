@@ -36,7 +36,7 @@ class Connect4:
         for _ in range(self._num_rows):
             circles.append(self._num_cols * [_Circle.BLANK])
         self._circles = circles
-        self._current_player = _Player.RED
+        self._current_player: _Player = _Player.RED
 
     def _is_game_over(self, i0: int, j0: int, color: str) -> bool:
         """i0, j0, and color are the row, column, and color of the newly-placed circle
@@ -89,27 +89,26 @@ class Connect4:
     def enter_move(self) -> bool:
         """Prompt the player to pick where to place circle"""
 
-        j: int = -1
         n = self._num_cols
         player = self._current_player
         circles = self._circles
 
         msg: str = f'{player.name}, enter column to place circle(1 - {n}): '
-        while not 0 <= j < n:
-            j_str: str = input(msg)
+        while True:
             try:
-                j = int(j_str) - 1
+                j = int(input(msg)) - 1
             except ValueError:
-                print(f'{j_str} is not a valid column number')
+                print('Invalid column number')
                 continue
             if not 0 <= j < n:
-                print(f'{j_str} is not a valid column number')
+                print(f'{j} is not a valid column number')
                 continue
             # If all chosen column's circles are filled,
             # user needs to choose diferent column
             if circles[0][j] != _Circle.BLANK:
                 print('You must choose a different column')
-                j = -1
+                continue
+            break
 
         # Place circle and determine if move ends game
         # If so, display board one last time and print message
