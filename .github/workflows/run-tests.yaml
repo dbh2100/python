@@ -19,6 +19,9 @@ jobs:
           python -m pip install coverage
           python -m coverage run -m polynomial_test
           python -m coverage report
-          cd quaternion
+          cd data_structures
+          python -m coverage run -m frozen_dict_unittest
+          python -m coverage report
+          cd ../quaternion
           python -m coverage run -m unittest discover -p "*_unittest.py"
           python -m coverage report
