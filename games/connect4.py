@@ -54,12 +54,12 @@ class Connect4:
             (-1, 1), # upper-right to lower-left diagonal
         ]:
 
-            count = 0
+            count: int = 0
 
             for offset in range(-3, 4):
 
-                i = i0 + (offset * di)
-                j = j0 + (offset * dj)
+                i: int = i0 + (offset * di)
+                j: int = j0 + (offset * dj)
 
                 if not 0 <= i < m or not 0 <= j < n:
                     continue
@@ -152,7 +152,7 @@ class Connect4:
 
     def play_game(self) -> None:
         """Start the game"""
-        game_over = False
+        game_over: bool = False
         while not game_over:
             self.display_board()
             game_over = self.enter_move()
