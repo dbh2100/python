@@ -5,6 +5,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: python -m pip install coverage
-      - run: cd python
+      - run: ls
       - run: python -m coverage run -m polynomial_test
       - run: python -m coverage report
