@@ -2,7 +2,7 @@ on: push
 
 jobs:
   lint:
-    runs-on: unbutu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
