@@ -1,0 +1,8 @@
+on: push
+
+jobs:
+  polynomial-test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: python -m coverage run -m polynomial_test
+      - run: python -m coverage report
