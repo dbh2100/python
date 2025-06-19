@@ -47,6 +47,8 @@ class Connect4:
         m = self._num_rows
         n = self._num_cols
 
+        offset_range = range(-3, 4)
+
         for di, dj in [
             (0, 1), # row
             (1, 0), # column
@@ -56,7 +58,7 @@ class Connect4:
 
             count: int = 0
 
-            for offset in range(-3, 4):
+            for offset in offset_range:
 
                 i: int = i0 + (offset * di)
                 j: int = j0 + (offset * dj)
