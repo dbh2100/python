@@ -1,7 +1,7 @@
 """Unitests for FrozenDict class"""
 
 import unittest
-from frozen_dict import FrozenDict
+from data_structures.frozen_dict import FrozenDict
 
 
 class FrozenDictTest(unittest.TestCase):
