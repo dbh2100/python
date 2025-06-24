@@ -87,6 +87,11 @@ class TestAlephNumber(unittest.TestCase):
 
     def test_power(self):
         self.assertEqual(2 ** AlephNumber(4), AlephNumber(5))
+        self.assertEqual(1 ** AlephNumber(4), 1)
+        self.assertEqual(0.43 ** AlephNumber(4), 0)
+        self.assertEqual(AlephNumber(4) ** 3.4, AlephNumber(4))
+        self.assertEqual(AlephNumber(4) ** 0, 1)
+        self.assertEqual(AlephNumber(4) ** -6, 0)
 
     def test_comparison(self):
 
@@ -122,7 +127,7 @@ class TestAlephNumber(unittest.TestCase):
         self.assertTrue(AlephNumber(9) > AlephNumber(4) > AlephNumber(2))
         self.assertTrue(AlephNumber(2) <= AlephNumber(4) <= AlephNumber(4) <= AlephNumber(9))
         self.assertTrue(AlephNumber(9) >= AlephNumber(4) >= AlephNumber(4) >= AlephNumber(2))
-
+    
     def test_conversion(self):
         with self.assertRaises(OverflowError):
             int(AlephNumber(4))
