@@ -14,6 +14,7 @@ class _Circle(Enum):
     RED = auto()
     BLACK = auto()
 
+# 2-dimensional array of circles
 _CircleGrid = list[list[_Circle]]
 
 
@@ -63,6 +64,7 @@ class Connect4:
                 i: int = i0 + (offset * di)
                 j: int = j0 + (offset * dj)
 
+                # Check if row or column is out of bounds
                 if not 0 <= i < m or not 0 <= j < n:
                     continue
 
