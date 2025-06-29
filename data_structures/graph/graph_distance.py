@@ -78,10 +78,15 @@ def find_min_connects(graph, node1, node2):
 def get_min_spanning_tree(graph):
     """Borůvka's algorithm"""
 
+    # The minimum spanning tree/output
     sub_graph = {}
 
+    # A map of nodes that have been connected to a given node
+    # in the subgraph
     connected = defaultdict(set)
 
+    # This boolean indicates whether all of the nodes have been
+    # connected in the subgraph
     completed = False
 
     while not completed:
@@ -92,6 +97,10 @@ def get_min_spanning_tree(graph):
 
             min_edge = (None, float('inf'))
 
+            # Find the next_node the shortest distance
+            # from the given node and its associated distance
+            # among the adjacent nodes that have not been already
+            # connected to the given node in the subgraph
             for next_node, distance in graph[node]:
                 if next_node not in connected[node] and distance < min_edge[1]:
                     min_edge = (next_node, distance)
