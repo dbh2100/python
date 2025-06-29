@@ -76,7 +76,11 @@ def find_min_connects(graph, node1, node2):
 
 
 def get_min_spanning_tree(graph):
-    """Borůvka's algorithm"""
+    """Returns the subtree with the lowest combined distances between nodes
+    where each node connected in the original tree is connected in the subtree
+
+    Uses Borůvka's algorithm
+    """
 
     # The minimum spanning tree/output
     sub_graph = {}
@@ -119,36 +123,36 @@ def get_min_spanning_tree(graph):
 
 if __name__ == '__main__':
 
-    graph = {}
+    graph0 = {}
 
-    add_connection(graph, 'a', 'b', 3)
-    add_connection(graph, 'a', 'c', 5)
-    add_connection(graph, 'b', 'd', 8)
-    add_connection(graph, 'c', 'd', 2)
-    add_connection(graph, 'e', 'f', 20)
-    add_connection(graph, 'h', 'd', 23)
-    add_connection(graph, 'a', 'h', 53)
-    add_connection(graph, 'h', 'i', 2)
+    add_connection(graph0, 'a', 'b', 3)
+    add_connection(graph0, 'a', 'c', 5)
+    add_connection(graph0, 'b', 'd', 8)
+    add_connection(graph0, 'c', 'd', 2)
+    add_connection(graph0, 'e', 'f', 20)
+    add_connection(graph0, 'h', 'd', 23)
+    add_connection(graph0, 'a', 'h', 53)
+    add_connection(graph0, 'h', 'i', 2)
 
     print('Distances:')
-    print('a->b:', calculate_min_distance(graph, 'a', 'b'))
-    print('a->d:', calculate_min_distance(graph, 'a', 'd'))
-    print('d->b:', calculate_min_distance(graph, 'd', 'b'))
-    print('f->e:', calculate_min_distance(graph, 'f', 'e'))
-    print('h->a:', calculate_min_distance(graph, 'h', 'a'))
-    print('a->i:', calculate_min_distance(graph, 'a', 'i'))
+    print('a->b:', calculate_min_distance(graph0, 'a', 'b'))
+    print('a->d:', calculate_min_distance(graph0, 'a', 'd'))
+    print('d->b:', calculate_min_distance(graph0, 'd', 'b'))
+    print('f->e:', calculate_min_distance(graph0, 'f', 'e'))
+    print('h->a:', calculate_min_distance(graph0, 'h', 'a'))
+    print('a->i:', calculate_min_distance(graph0, 'a', 'i'))
     print('\n')
 
     print('Minimum connections:')
-    print('a->b:', find_min_connects(graph, 'a', 'b'))
-    print('a->c:', find_min_connects(graph, 'a', 'c'))
-    print('a->d:', find_min_connects(graph, 'a', 'd'))
-    print('d->b:', find_min_connects(graph, 'd', 'b'))
-    print('f->e:', find_min_connects(graph, 'f', 'e'))
-    print('a->h:', find_min_connects(graph, 'a', 'h'))
-    print('h->a:', find_min_connects(graph, 'h', 'a'))
-    print('i->a:', find_min_connects(graph, 'i', 'a'))
+    print('a->b:', find_min_connects(graph0, 'a', 'b'))
+    print('a->c:', find_min_connects(graph0, 'a', 'c'))
+    print('a->d:', find_min_connects(graph0, 'a', 'd'))
+    print('d->b:', find_min_connects(graph0, 'd', 'b'))
+    print('f->e:', find_min_connects(graph0, 'f', 'e'))
+    print('a->h:', find_min_connects(graph0, 'a', 'h'))
+    print('h->a:', find_min_connects(graph0, 'h', 'a'))
+    print('i->a:', find_min_connects(graph0, 'i', 'a'))
     print('\n')
 
     print('Minimum spanning tree:')
-    print(get_min_spanning_tree(graph))
+    print(get_min_spanning_tree(graph0))
