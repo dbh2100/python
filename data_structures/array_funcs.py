@@ -5,6 +5,7 @@ from functools import reduce
 from collections.abc import Sequence
 from itertools import chain
 from typing import Any
+from numbers import Real
 
 
 def reshape(arr: Sequence[Any], dims: Sequence[int]) -> Sequence[Any]:
@@ -17,17 +18,17 @@ def reshape(arr: Sequence[Any], dims: Sequence[int]) -> Sequence[Any]:
         raise ValueError('Input array must be a sequence')
 
     # Flatten original array
-    arr_cls = type(arr)
+    arr_cls: type = type(arr)
     if isinstance(arr[0], Sequence):
         arr = arr_cls(chain.from_iterable(arr))
 
     # Find array length
-    n = len(arr)
+    n: int = len(arr)
 
     # Find length of each section sn
     # by multiplying remaining dimensions
     dim0, rem_dims = dims[0], dims[1:]
-    sn = reduce(mul, rem_dims) if rem_dims else 1
+    sn: int = reduce(mul, rem_dims) if rem_dims else 1
     if (dim0 * sn) != n:
         raise ValueError('Array size must equal product of dimensions')
     if not rem_dims:
@@ -35,24 +36,24 @@ def reshape(arr: Sequence[Any], dims: Sequence[int]) -> Sequence[Any]:
 
     # Separate array into sections and recusively resize
     # the sections based on the remaining dimensions
-    new_array = []
+    new_array: list = []
     for i in range(0, n, sn):
         new_array.append(reshape(arr[i:i+sn], rem_dims))
 
     return arr_cls(new_array)
 
 
-def get_dimensions(arr):
+def get_dimensions(arr: Sequence[Any]) -> list[int]:
     """Find the dimensions/size of array arr"""
-    dims = []
-    arr_slice = arr[:]
+    dims: list[int] = []
+    arr_slice: Sequence = arr[:]
     while hasattr(arr_slice, '__len__'):
         dims.append(len(arr_slice))
         arr_slice = arr_slice[0]
     return dims
 
 
-def get_element(arr, indices):
+def get_element(arr: Sequence[Any], indices: Sequence[int]) -> Any:
     """Find the element of the array corresponding to the indices"""
     arr_slice = arr[:]
     for index in indices:
@@ -60,7 +61,7 @@ def get_element(arr, indices):
     return arr_slice
 
 
-def get_min_path(arr, indices=None):
+def get_min_path(arr: Sequence[Any], indices=None) -> Real:
     """Get the shortest path from the element defined by indices
     to the lower-right corner of an n-dimensional array arr
     arr can be of any number of dimensions
