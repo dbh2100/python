@@ -1,7 +1,5 @@
 """Defines functions to generate prime numbers"""
 
-from config import command_args
-
 
 def prime_gen():
     """Prime number generator"""
@@ -26,14 +24,8 @@ _cache = {2: [], 3: [2]}
 def primes_to_n(n):
     """Return all primes less than or equal to n using cache"""
 
-    if command_args.debug:
-        print(f'calling primes_to_n({n})')
-
     if n in _cache:
         return _cache[n]
-
-    if command_args.debug:
-        print(f'{n} not yet cached for primes_to_n')
 
     primes = []
 
