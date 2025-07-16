@@ -80,7 +80,7 @@ def evaluate_equation(equation):
     second_part = []
     transition = []
 
-    # Encapsulate an ending parenthetical equation  
+    # Encapsulate an ending parenthetical equation
     nesting = 0
     for char in rev:
         if char == ')':
@@ -167,8 +167,8 @@ if __name__ == '__main__':
             raise
 
     # Test equation with floating-point numbers
-    float_eq = '3.2 - 10 * (4.9 + 8.5)'
-    assert evaluate_equation(float_eq) == eval(float_eq)
-    assert evaluate_equation_regex(float_eq) == eval(float_eq)
+    FLOAT_EQUATION = '3.2 - 10 * (4.9 + 8.5)'
+    assert evaluate_equation(FLOAT_EQUATION) == eval(FLOAT_EQUATION)
+    assert evaluate_equation_regex(FLOAT_EQUATION) == eval(FLOAT_EQUATION)
 
     print('All tests pass')
