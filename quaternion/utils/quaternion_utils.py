@@ -37,8 +37,8 @@ def ln(q):
 def geodesic_distance(q1, q2):
     '''The absolute value of half the angle subtended by two quaternions along the
     great arc of a sphere.
-
-    Also accepts real and complex numbers.'''
+        
+        Also accepts real and complex numbers.'''
     if not isinstance(q1, Quaternion) or not isinstance(q2, Quaternion):
         raise TypeError('Both arguments must be Quaternions or a Quaternion subclass')
     try:

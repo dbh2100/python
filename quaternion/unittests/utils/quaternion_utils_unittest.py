@@ -1,13 +1,17 @@
+'''Unit tests for utils/quaternion_utils.py'''
+
 from __future__ import absolute_import
 
 import unittest
+import math
+import cmath
 from utils.quaternion_utils import exp, ln, geodesic_distance
 from quaternion import Quaternion
 from quaternionic_integer import QuaternionicInteger
-import math
-import cmath
+
 
 class QuaternionUtilsTestCase(unittest.TestCase):
+    '''Unit tests for utils/quaternion_utils.py'''
 
     def setUp(self):
         self.q1 = Quaternion(3.7, 17.1, -2.4, 4.8)
@@ -16,17 +20,17 @@ class QuaternionUtilsTestCase(unittest.TestCase):
         self.iq2 = QuaternionicInteger(-7, 3, -2, -5)
         self.c = -7 + 5j #complex
         self.f = 2.4 #float
-    
+
     #determines if two quaternions are equal by ensuring that each component is equal
     #to a significance of 1e-7
-    def assertQEqual(self, q1, q2):
+    def assert_quaternion_equal(self, q1, q2):
         self.assertIsInstance(q1, Quaternion)
         self.assertIsInstance(q2, Quaternion)
         self.assertAlmostEqual(q1.scalar, q2.scalar)
         self.assertAlmostEqual(q1.i, q2.i)
         self.assertAlmostEqual(q1.j, q2.j)
         self.assertAlmostEqual(q1.k, q2.k)
-    
+
     def test_exp(self):
         #exponential of a quaternion
         self.assertIsInstance(exp(self.q1), Quaternion)
@@ -38,7 +42,7 @@ class QuaternionUtilsTestCase(unittest.TestCase):
         #exponential of a complex number using quaternion_utils.exp()
         #should be equal to cmath.exp()
         self.assertEqual(exp(self.c), cmath.exp(self.c))
-    
+
     def test_ln(self):
         #natural logarithm of a quaternion
         self.assertIsInstance(ln(self.q1), Quaternion)
@@ -50,11 +54,11 @@ class QuaternionUtilsTestCase(unittest.TestCase):
         #natural logarithm of a complex number using quaternion_utils.exp()
         #should be equal to cmath.exp()
         self.assertEqual(ln(self.c), cmath.log(self.c))
-    
+
     #exp() and ln() should be inverses
     def test_inverse(self):
-        self.assertQEqual(exp(ln(self.q1)), self.q1)
-        self.assertQEqual(exp(ln(self.iq1)), self.iq1)
+        self.assert_quaternion_equal(exp(ln(self.q1)), self.q1)
+        self.assert_quaternion_equal(exp(ln(self.iq1)), self.iq1)
 
     def test_geodesic(self):
         self.assertIsInstance(geodesic_distance(self.q1, self.q2), float)
@@ -66,6 +70,6 @@ class QuaternionUtilsTestCase(unittest.TestCase):
         with self.assertRaises(TypeError):
             geodesic_distance('a', self.q1)
 
+
 if __name__ == '__main__':
     unittest.main()
-

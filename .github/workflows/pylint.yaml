@@ -16,12 +16,12 @@ jobs:
           pip install -r requirements.txt
       - name: Analyze code with Pylint
         run: |
-          pylint *.py  -disable=C0114,C0115,C0116 --exit-zero
+          pylint *.py  --exit-zero
           cd data_structures
-          pylint $(git ls-files '*.py') -disable=C0114,C0115,C0116 --exit-zero
+          pylint $(git ls-files '*.py') --exit-zero
           cd ../games
-          pylint $(git ls-files '*.py')  -disable=C0114,C0115,C0116 --exit-zero
+          pylint $(git ls-files '*.py') --exit-zero
           cd ../quaternion
-          pylint $(git ls-files '*.py')  -disable=C0114,C0115,C0116 --exit-zero
+          pylint $(git ls-files '*.py') -disable=C0116,R0902,R0904 --exit-zero
           cd ../tests
-          pylint $(git ls-files '*.py')  -disable=C0114,C0115,C0116 --exit-zero
+          pylint $(git ls-files '*.py') --exit-zero
