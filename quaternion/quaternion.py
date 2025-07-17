@@ -6,10 +6,8 @@ from __future__ import division
 from numbers import Number, Complex, Real
 import re
 import math
-try:
-    from collections.abc import Mapping, Iterable
-except ImportError:
-    from collections import Mapping, Iterable
+from collections.abc import Mapping, Iterable
+
 
 class Quaternion(Number):
     '''A quaternion is a number in a four-dimensional mathematical system.
@@ -26,8 +24,8 @@ class Quaternion(Number):
 
         if len(args) + len(kwargs) > 4:
             raise TypeError(
-                '%s() takes at most 4 arguments, %d given' %
-                (self.__class__.__name__, len(args) + len(kwargs))
+                f'{self.__class__.__name__} takes at most 4 arguments, '
+                f'{len(args) + len(kwargs)} given'
             )
 
         #set defaults
@@ -42,8 +40,8 @@ class Quaternion(Number):
             if isinstance(args[0], Real):
                 if not all(isinstance(arg, Real) for arg in args):
                     raise TypeError(
-                        'If the first argument to %s() is Real, \
-                            the other arguments must also be Real'
+                        f'If the first argument to {self.__class__.__name__} is Real, '
+                            'the other arguments must also be Real'
                         % self.__class__.__name__
                     )
                 self._scalar = float(args[0])
@@ -60,15 +58,13 @@ class Quaternion(Number):
                     self._k = float(args[1].imag)
                 else:
                     raise TypeError(
-                        'If the first argument to %s() is Complex, \
-                            the second argument must also be Complex'
-                        % self.__class__.__name__
+                        f'If the first argument to {self.__class__.__name__} is Complex, '
+                            'the second argument must also be Complex'
                     )
                 if len(args) > 2:
                     raise TypeError(
-                        'If the first argument to %s() is Complex, \
-                            only a single additional Complex argument is allowed'
-                        % self.__class__.__name__
+                        f'If the first argument to {self.__class__.__name__} is Complex, '
+                            'only a single additional Complex argument is allowed'
                     )
 
             #creating Quaternion from other Quaternion
@@ -79,8 +75,8 @@ class Quaternion(Number):
                 self._k = float(args[0].k)
                 if len(args) > 1:
                     raise TypeError(
-                        'If the first argument to %s() is Quaternion, \
-                            no other arguments are allowed'
+                        f'If the first argument to {self.__class__.__name__} is Quaternion, '
+                            'no other arguments are allowed'
                         % self.__class__.__name__
                     )
 
@@ -98,21 +94,20 @@ class Quaternion(Number):
                             self._k = float(re.sub(r'\s', '', x[:-1]))
                         else:
                             self._scalar = float(x.replace(' ', ''))
-                except ValueError:
+                except ValueError as exc:
                     raise ValueError(
-                        '%s() arg is a malformed string'
-                        % self.__class__.__name__
-                    )
+                        f'{self.__class__.__name__} arg is a malformed string'
+                    ) from exc
                 if len(args) > 1:
                     raise TypeError(
-                        '%s() cannot take second argument if first is a string'
-                        % self.__class__.__name__
+                        f'{self.__class__.__name__} cannot take second argument if first '
+                            'is a string'
                     )
 
             else:
                 raise TypeError(
-                    '%s() arguments must be a string, Real, Complex, or Quaternion'
-                    % self.__class__.__name__
+                    f'{self.__class__.__name__} arguments must be a string, Real, Complex, '
+                        'or Quaternion'
                 )
 
         except IndexError:
@@ -120,14 +115,13 @@ class Quaternion(Number):
 
         if kwargs and not all(isinstance(arg, Real) for arg in args):
             raise TypeError(
-                'If keyword arguments used for %s(), all non-keyword arguments must be Real'
-                % self.__class__.__name__
+                f'If keyword arguments used for {self.__class__.__name__}, '
+                    'all non-keyword arguments must be Real'
             )
         for key, value in kwargs.items():
             if not isinstance(value, Real):
                 raise TypeError(
-                    'All keyword arguments for %s() must be real'
-                    % self.__class__.__name__
+                    'All keyword arguments for {self.__class__.__name__} must be real'
                 )
             if key == 'scalar':
                 if len(args) > 0:
@@ -386,9 +380,8 @@ class Quaternion(Number):
         '''Create a quaternion instance from an iterable'''
         if isinstance(it, Mapping):
             return cls(**it)
-        elif isinstance(it, Iterable):
+        if isinstance(it, Iterable):
             return cls(*it)
-        else:
-            raise TypeError('%s.from_iterable() argument must be an iterable' % cls.__name__)
+        raise TypeError(f'{cls.__name__}.from_iterable() argument must be an iterable')
 
 Quaternion.register(Complex)

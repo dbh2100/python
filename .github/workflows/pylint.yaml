@@ -21,5 +21,7 @@ jobs:
           pylint $(git ls-files '*.py') -disable=C0114,C0115,C0116 --exit-zero
           cd ../games
           pylint $(git ls-files '*.py')  -disable=C0114,C0115,C0116 --exit-zero
+          cd ../quaternion
+          pylint $(git ls-files '*.py')  -disable=C0114,C0115,C0116 --exit-zero
           cd ../tests
           pylint $(git ls-files '*.py')  -disable=C0114,C0115,C0116 --exit-zero

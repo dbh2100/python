@@ -1,3 +1,5 @@
+'''Defines a class, DisplayEquation, to create a verical display of a binary quaternion equation'''
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -5,8 +7,8 @@ from __future__ import print_function
 from quaternion import Quaternion
 from quaternionic_integer import QuaternionicInteger
 
-class DisplayEquation(object):
-    '''Vertical display of binary quaternion equation.  Operator must be '+', '-', '*', or '/'.
+class DisplayEquation:
+    '''Vertical display of a binary quaternion equation.  Operator must be '+', '-', '*', or '/'.
         
         >>> q1 = Quaternion(7, 6, -4, 2)
         >>> q2 = Quaternion(5, -1, -2, 9)
@@ -82,14 +84,17 @@ class DisplayEquation(object):
 
     @property
     def q1(self):
+        '''Left quaternion in equation'''
         return self._q1
 
     @property
     def q2(self):
+        '''Right quaternion in equation'''
         return self._q2
 
     @property
     def operator(self):
+        '''Operator to apply to quaternions'''
         return self._operator
 
     @q1.setter
@@ -101,7 +106,7 @@ class DisplayEquation(object):
     def q2(self, value):
         self._q2 = value
         self._create_equation()
-      
+
     @operator.setter
     def operator(self, value):
         self._operator = value
@@ -143,14 +148,14 @@ class DisplayEquation(object):
                 adjust = max(adjust, len('%.4f' % abs(x)) + 3)
 
         def _display_q(q):
-            vars = ('', 'i', 'j', 'k')
+            attrs = ('', 'i', 'j', 'k')
             output = ''
-            for x, var in zip(q.to_list(), vars):
+            for x, attr in zip(q.to_list(), attrs):
                 sign = '-' if x < 0 else '+'
                 if integral:
-                    output += (sign + str(abs(x)) + var).rjust(adjust)
+                    output += (sign + str(abs(x)) + attr).rjust(adjust)
                 else:
-                    output += (sign + '%.4f' % abs(x) + var).rjust(adjust)
+                    output += (sign + '%.4f' % abs(x) + attr).rjust(adjust)
             return output
 
         line1 = '\n ' + _display_q(q1)
@@ -165,6 +170,7 @@ class DisplayEquation(object):
 
     @property
     def equation(self):
+        '''Equation display'''
         return self._equation
 
 if __name__ == '__main__':

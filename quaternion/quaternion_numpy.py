@@ -1,19 +1,20 @@
+'''
+    Module for quaternions and quaternionic integers with NumPy float
+    and int types as their components
+    '''
+
 from __future__ import absolute_import
 
+from numpy import float16, float32, float64, int8, int16, int32, int64, inexact
 from quaternion import Quaternion
 from quaternionic_integer import QuaternionicInteger
-from numpy import float16, float32, float64, int8, int16, int32, int64, number, inexact
 
-'''
-    Module for quaternions and quaternionic integers with NumPy float and int types as their components
-    '''
 
 class QuaternionFloating(inexact):
     '''
 Base for all quaternion scalar types that are made up of
 floating numbers.
         '''
-    pass
 
 class Quaternion64(Quaternion, QuaternionFloating):
     '''

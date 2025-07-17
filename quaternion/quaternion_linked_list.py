@@ -1,19 +1,21 @@
+'''Template for linked lists of nodes containing and sorted by their quaternion attributes'''
+
 from __future__ import absolute_import
 from __future__ import print_function
 
 from quaternion import Quaternion
 
-'''Template for linked lists of nodes containing and sorted by their quaternion attributes'''
+class QuaternionNode:
+    '''Node in quaternion list'''
 
-class QuaternionNode(object):
-    
     def __init__(self, q):
-        self._quaternion = Quaternion(q)
+        self.quaternion = Quaternion(q)
         self.previous = None
         self.next = None
 
     def insert(self, node, compare):
-        if compare(self._quaternion, node._quaternion):
+        '''Insert node into list'''
+        if compare(self.quaternion, node.quaternion):
             if self.next:
                 self.next = self.next.insert(node, compare)
             else:
@@ -27,8 +29,11 @@ class QuaternionNode(object):
         self.previous = node
         return node
 
-class QuaternionList(object):
-    '''Can use either alphabetical (ordering='alpha') or norm-based (ordering='norm') ordering.  Alphabetical ordering sorts list based first on scalar value, then i, j, and k.  Norm-based ordering sorts list based on the norm value of each quaternion, in ascending order.
+class QuaternionList:
+    '''Can use either alphabetical (ordering='alpha') or norm-based (ordering='norm') ordering.
+
+    Alphabetical ordering sorts list based first on scalar value, then i, j, and k.
+    Norm-based ordering sorts list based on the norm value of each quaternion, in ascending order.
         
         >>> q1 = Quaternion(6, -1, 3, 10)
         >>> q2 = Quaternion(3, 10, -5, 6)
@@ -85,16 +90,19 @@ class QuaternionList(object):
         self.ordering = ordering
         self.nodes = {}
         self.head = None
-    
+
     @staticmethod
     def alpha_compare(q1, q2):
+        '''Compare the two quaternions based on alphabetical order'''
         return q1.to_list() < q2.to_list()
 
     @staticmethod
     def norm_compare(q1, q2):
+        '''Compare the two quaternions based on their norms'''
         return q1.norm() < q2.norm()
 
     def add(self, q):
+        '''Add quaternion q to the list based on the defined ordering'''
         if not isinstance(q, Quaternion):
             raise TypeError('Argument must be quaternion or quaternion sublclass')
         node = QuaternionNode(q)
@@ -108,6 +116,7 @@ class QuaternionList(object):
             self.head = node
 
     def remove(self, q):
+        '''Remove quaterion q from the list'''
         node = self.nodes[q]
         if node is self.head:
             self.head = node.next
@@ -119,12 +128,12 @@ class QuaternionList(object):
         del node
 
     def print_quaternions(self):
+        '''Print the list quatnerions in order'''
         node = self.head
         while node:
-            print(node._quaternion)
+            print(node.quaternion)
             node = node.next
 
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
-

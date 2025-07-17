@@ -1,8 +1,10 @@
+'''Defines QuaternionicInteger class'''
+
 from __future__ import absolute_import
 
-from quaternion import Quaternion
 from numbers import Integral
 import operator
+from quaternion import Quaternion
 
 class QuaternionicInteger(Quaternion):
 
@@ -13,7 +15,7 @@ class QuaternionicInteger(Quaternion):
     __slots__ = ()
 
     def __init__(self, *args, **kwargs):
-        super(QuaternionicInteger, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._scalar = int(self._scalar)
         self._i = int(self._i)
         self._j = int(self._j)
@@ -31,19 +33,17 @@ class QuaternionicInteger(Quaternion):
         def forward(a, b):
             if isinstance(b, QuaternionicInteger):
                 return monomorphic_operator(a, QuaternionicInteger(b))
-            elif isinstance(b, Quaternion):
+            if isinstance(b, Quaternion):
                 return fallback_operator(Quaternion(a), b)
-            else:
-                return NotImplemented
+            return NotImplemented
         forward.__name__ = '__' + fallback_operator.__name__ + '__'
 
         def reverse(b, a):
             if isinstance(a, QuaternionicInteger):
                 return monomorphic_operator(QuaternionicInteger(a), b)
-            elif isinstance(a, Quaternion):
+            if isinstance(a, Quaternion):
                 return fallback_operator(Quaternion(a), Quaternion(b))
-            else:
-                return NotImplemented
+            return NotImplemented
         reverse.__name__ = '__r' + fallback_operator.__name__ + '__'
 
         return forward, reverse
