@@ -1,7 +1,8 @@
 """Defines unittests for AlephNumber class"""
 
-from aleph_number import AlephNumber, INFINITY
 import unittest
+from aleph_number import AlephNumber, INFINITY
+
 
 class TestAlephNumber(unittest.TestCase):
     """Unittest module for AlephNumber class"""
@@ -23,9 +24,9 @@ class TestAlephNumber(unittest.TestCase):
         #Addition between aleph number and string, None, etc. not implemented
         for x in ('a', None, [3], (9,), INFINITY):
             with self.assertRaises(TypeError):
-                y = AlephNumber(4) + x
+                AlephNumber(4) + x
             with self.assertRaises(TypeError):
-                y = x + AlephNumber(4)
+                x + AlephNumber(4)
 
     def test_subtraction(self):
 
@@ -38,9 +39,9 @@ class TestAlephNumber(unittest.TestCase):
         #Subtraction between aleph number and string, None, other aleph number, etc. not implemented
         for x in ('a', None, [3], (9,), AlephNumber(1), AlephNumber(7)):
             with self.assertRaises(TypeError):
-                y = AlephNumber(4) - x
+                AlephNumber(4) - x
             with self.assertRaises(TypeError):
-                y = x - AlephNumber(4)
+                x - AlephNumber(4)
 
     def test_multiplication(self):
 
@@ -59,9 +60,9 @@ class TestAlephNumber(unittest.TestCase):
         #Multiplication between aleph number and string, None, etc. not implemented
         for x in ('a', None, [3], (9,), INFINITY):
             with self.assertRaises((TypeError, OverflowError)):
-                y = AlephNumber(4) * x
+                AlephNumber(4) * x
             with self.assertRaises((TypeError, OverflowError)):
-                y = x * AlephNumber(4)
+                x * AlephNumber(4)
 
     def test_division(self):
 
@@ -127,7 +128,7 @@ class TestAlephNumber(unittest.TestCase):
         self.assertTrue(AlephNumber(9) > AlephNumber(4) > AlephNumber(2))
         self.assertTrue(AlephNumber(2) <= AlephNumber(4) <= AlephNumber(4) <= AlephNumber(9))
         self.assertTrue(AlephNumber(9) >= AlephNumber(4) >= AlephNumber(4) >= AlephNumber(2))
-    
+
     def test_conversion(self):
         with self.assertRaises(OverflowError):
             int(AlephNumber(4))
