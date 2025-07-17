@@ -22,6 +22,6 @@ jobs:
           cd ../games
           pylint $(git ls-files '*.py') --exit-zero
           cd ../quaternion
-          pylint $(git ls-files '*.py') -disable=C0116,R0902,R0904 --exit-zero
+          pylint $(git ls-files '*.py') --disable=C0116,R0902,R0904 --exit-zero
           cd ../tests
           pylint $(git ls-files '*.py') --exit-zero
