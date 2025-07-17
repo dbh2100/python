@@ -17,3 +17,8 @@ jobs:
       - name: Analyze code with Pylint
         run: |
           pylint *.py
+          cd data_structures
+          pylint $(git ls-files '*.py')
+          cd ../quaternion
+          pylint $(git ls-files '*.py')
+
