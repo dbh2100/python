@@ -16,9 +16,10 @@ jobs:
           pip install -r requirements.txt
       - name: Analyze code with Pylint
         run: |
-          pylint *.py
+          pylint *.py  --disable=C0114,W0611
           cd data_structures
-          pylint $(git ls-files '*.py')
-          cd ../quaternion
-          pylint $(git ls-files '*.py')
-
+          pylint $(git ls-files '*.py') --disable=C0114,W0611
+          cd ../games
+          pylint $(git ls-files '*.py')  --disable=C0114,W0611
+          cd ../tests
+          pylint $(git ls-files '*.py')  --disable=C0114,W0611

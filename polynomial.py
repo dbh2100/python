@@ -5,6 +5,7 @@ from collections.abc import Callable
 from itertools import zip_longest
 from instance_class_method import InstanceClassMethod
 
+
 class Polynomial(Callable):
     '''Polynomial function class
         The constructor arguments are the polynomial coefficients
