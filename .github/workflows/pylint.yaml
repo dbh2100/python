@@ -16,7 +16,7 @@ jobs:
           pip install -r requirements.txt
       - name: Analyze code with Pylint
         run: |
-          pylint *.py  --exit-zero
+          pylint *.py  --disable=W0631,W0123 --exit-zero
           cd data_structures
           pylint $(git ls-files '*.py') --exit-zero
           cd ../games
