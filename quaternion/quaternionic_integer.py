@@ -18,16 +18,16 @@ class QuaternionicInteger(Quaternion):
         self._i = int(self._i)
         self._j = int(self._j)
         self._k = int(self._k)
-    
+
     def __repr__(self):
         i_sign = '-' if self.i < 0 else '+'
         j_sign = '-' if self.j < 0 else '+'
         k_sign = '-' if self.k < 0 else '+'
         return '%d %s %di %s %.dj %s %dk' % \
         (self.scalar, i_sign, abs(self.i), j_sign, abs(self.j), k_sign, abs(self.k))
-    
+
     def _operator_fallbacks(monomorphic_operator, fallback_operator):
-        
+
         def forward(a, b):
             if isinstance(b, QuaternionicInteger):
                 return monomorphic_operator(a, QuaternionicInteger(b))

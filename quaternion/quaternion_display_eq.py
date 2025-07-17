@@ -79,51 +79,51 @@ class DisplayEquation(object):
         self._q2 = q2
         self._operator = operator
         self._create_equation()
-        
+
     @property
     def q1(self):
         return self._q1
-    
+
     @property
     def q2(self):
         return self._q2
-        
+
     @property
     def operator(self):
         return self._operator
-        
+
     @q1.setter
     def q1(self, value):
         self._q1 = value
         self._create_equation()
-            
+
     @q2.setter
     def q2(self, value):
         self._q2 = value
         self._create_equation()
-                
+      
     @operator.setter
     def operator(self, value):
         self._operator = value
         self._create_equation()
-        
+
     def _create_equation(self):
-        
+
         q1 = self.q1
         q2 = self.q2
         operator = self.operator
-            
+
         integral = False
         if isinstance(q1, QuaternionicInteger) and isinstance(q2, QuaternionicInteger):
             integral = True
-            
+
         if integral:
             q1 = QuaternionicInteger(q1)
             q2 = QuaternionicInteger(q2)
         else:
             q1 = Quaternion(q1)
             q2 = Quaternion(q2)
-        
+
         if operator == '+':
             q3 = q1 + q2
         elif operator == '-':
@@ -141,7 +141,7 @@ class DisplayEquation(object):
                 adjust = max(adjust, len(str(abs(x))) + 3)
             else:
                 adjust = max(adjust, len('%.4f' % abs(x)) + 3)
-        
+
         def _display_q(q):
             vars = ('', 'i', 'j', 'k')
             output = ''
@@ -152,17 +152,17 @@ class DisplayEquation(object):
                 else:
                     output += (sign + '%.4f' % abs(x) + var).rjust(adjust)
             return output
-        
+
         line1 = '\n ' + _display_q(q1)
         line2 = operator + _display_q(q2)
         line3 = (4 * adjust + 1) * '-'
         line4 =' ' + _display_q(q3) + '\n'
-        
+
         self._equation = '\n'.join((line1, line2, line3, line4))
-        
+
     def __repr__(self):
         return self._equation
-        
+
     @property
     def equation(self):
         return self._equation
@@ -170,4 +170,3 @@ class DisplayEquation(object):
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
-

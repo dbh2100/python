@@ -7,7 +7,7 @@ from numpy import float16, float32, float64, int8, int16, int32, int64, number, 
 '''
     Module for quaternions and quaternionic integers with NumPy float and int types as their components
     '''
-    
+
 class QuaternionFloating(inexact):
     '''
 Base for all quaternion scalar types that are made up of
@@ -52,7 +52,7 @@ class QuaternionicInteger32(QuaternionicInteger):
     '''
         QuaternionicInteger subclass with each property of type numpy.int8
         '''
-    
+
     def __init__(self, *args):
         super(QuaternionicInteger32, self).__init__(*args)
         self._scalar = int8(self._scalar)
