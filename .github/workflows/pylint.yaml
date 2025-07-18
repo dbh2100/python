@@ -14,14 +14,22 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Analyze code with Pylint
+      - name: Analyze main-folder code with Pylint
         run: |
           pylint *.py  --disable=W0631,W0123 --exit-zero
+      - name: Analyze data_structures code with Pylint
+        run: |
           cd data_structures
           pylint $(git ls-files '*.py') --exit-zero
+      - name: Analyze games code with Pylint
+        run: |
           cd ../games
           pylint $(git ls-files '*.py') --exit-zero
+      - name: Analyze quaternion code with Pylint
+        run: |
           cd ../quaternion
           pylint $(git ls-files '*.py') --disable=C0116,R0902,R0904 --exit-zero
+      - name: Analyze tests with Pylint
+        run: |
           cd ../tests
           pylint $(git ls-files '*.py') --disable=C0116,E1101,E1137,E1138,R0902,R0904,W0106 --exit-zero
