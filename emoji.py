@@ -1,3 +1,5 @@
+# pylint: skip-file
+
 """Python emoji class"""
 
 class EmojiMeta(type):

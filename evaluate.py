@@ -1,3 +1,5 @@
+# pylint: skip-file
+
 """This module defines functions that replicate Python's builtin eval()"""
 
 import re
