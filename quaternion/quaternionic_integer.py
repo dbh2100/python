@@ -22,11 +22,16 @@ class QuaternionicInteger(Quaternion):
         self._k = int(self._k)
 
     def __repr__(self):
+
         i_sign = '-' if self.i < 0 else '+'
         j_sign = '-' if self.j < 0 else '+'
         k_sign = '-' if self.k < 0 else '+'
-        return '%d %s %di %s %.dj %s %dk' % \
-        (self.scalar, i_sign, abs(self.i), j_sign, abs(self.j), k_sign, abs(self.k))
+
+        i_part = f'{i_sign} {abs(self.i)}i'
+        j_part = f'{j_sign} {abs(self.j)}j'
+        k_part = f'{k_sign} {abs(self.k)}k'
+
+        return ' '.join([str(self.scalar), i_part, j_part, k_part])
 
     def _operator_fallbacks(monomorphic_operator, fallback_operator):
 

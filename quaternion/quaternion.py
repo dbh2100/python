@@ -121,26 +121,26 @@ class Quaternion(Number):
         for key, value in kwargs.items():
             if not isinstance(value, Real):
                 raise TypeError(
-                    'All keyword arguments for {self.__class__.__name__} must be real'
+                    f'All keyword arguments for {self.__class__.__name__} must be real'
                 )
             if key == 'scalar':
                 if len(args) > 0:
-                    raise TypeError('scalar in position %d' % len(args))
+                    raise TypeError(f'scalar in position {len(args)}')
                 self._scalar = value
             elif key == 'i':
                 if len(args) > 1:
-                    raise TypeError('i in position %d' % len(args))
+                    raise TypeError(f'i in position {len(args)}')
                 self._i = value
             elif key == 'j':
                 if len(args) > 2:
-                    raise TypeError('j in position %d' % len(args))
+                    raise TypeError(f'j in position {len(args)}')
                 self._j = value
             elif key == 'k':
                 if len(args) > 3:
-                    raise TypeError('k in position %d' % len(args))
+                    raise TypeError(f'k in position {len(args)}')
                 self._k = value
             else:
-                raise ValueError('Inappropriate keyword detected: %s' % key)
+                raise ValueError(f'Inappropriate keyword detected: {key}')
 
     @property
     def scalar(self):
@@ -163,11 +163,17 @@ class Quaternion(Number):
         return self._k
 
     def __repr__(self):
+
         i_sign = '-' if self.i < 0 else '+'
         j_sign = '-' if self.j < 0 else '+'
         k_sign = '-' if self.k < 0 else '+'
-        return '%.4f %s %.4fi %s %.4fj %s %.4fk' % \
-        (self.scalar, i_sign, abs(self.i), j_sign, abs(self.j), k_sign, abs(self.k))
+
+        scalar_part = f'{self.scalar:.4f}'
+        i_part = f'{i_sign} {abs(self.i):.4f}i'
+        j_part = f'{j_sign} {abs(self.j):.4f}j'
+        k_part = f'{k_sign} {abs(self.k):.4f}k'
+
+        return ' '.join([scalar_part, i_part, j_part, k_part])
 
     def __add__(self, other):
         if isinstance(other, Real):

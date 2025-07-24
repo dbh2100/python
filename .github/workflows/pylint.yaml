@@ -28,7 +28,7 @@ jobs:
       - name: Analyze quaternion code with Pylint
         run: |
           cd quaternion
-          pylint $(git ls-files '*.py') --disable=C0116,R0902,R0904 --exit-zero
+          pylint $(git ls-files '*.py') --disable=C0116,E0213,E1102,R0902,R0904 --exit-zero
       - name: Analyze tests with Pylint
         run: |
           cd tests

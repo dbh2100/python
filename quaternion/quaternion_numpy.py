@@ -55,7 +55,7 @@ class QuaternionicInteger32(QuaternionicInteger):
         '''
 
     def __init__(self, *args):
-        super(QuaternionicInteger32, self).__init__(*args)
+        super().__init__(*args)
         self._scalar = int8(self._scalar)
         self._i = int8(self._i)
         self._j = int8(self._j)
@@ -66,7 +66,7 @@ class QuaternionicInteger64(QuaternionicInteger):
         QuaternionicInteger subclass with each property of type numpy.int16
         '''
     def __init__(self, *args):
-        super(QuaternionicInteger64, self).__init__(*args)
+        super().__init__(*args)
         self._scalar = int16(self._scalar)
         self._i = int16(self._i)
         self._j = int16(self._j)
@@ -77,7 +77,7 @@ class QuaternionicInteger128(QuaternionicInteger):
         QuaternionicInteger subclass with each property of type numpy.int32
         '''
     def __init__(self, *args):
-        super(QuaternionicInteger128, self).__init__(*args)
+        super().__init__(*args)
         self._scalar = int32(self._scalar)
         self._i = int32(self._i)
         self._j = int32(self._j)
@@ -88,7 +88,7 @@ class QuaternionicInteger256(QuaternionicInteger):
         QuaternionicInteger subclass with each property of type numpy.int64
         '''
     def __init__(self, *args):
-        super(QuaternionicInteger256, self).__init__(*args)
+        super().__init__(*args)
         self._scalar = int64(self._scalar)
         self._i = int64(self._i)
         self._j = int64(self._j)
