@@ -1,8 +1,7 @@
-# pylint: skip-file
-
 """This module defines functions that replicate Python's builtin eval()"""
 
 import re
+
 
 # Regular expression patterns
 PARENTHESIS_RE = re.compile(r'\( [^()]* \)', flags=re.VERBOSE)
@@ -69,87 +68,73 @@ def evaluate_equation_regex(equation):
 
 def evaluate_equation(equation):
     """Evaluate a mathematical equation just using Python builtins"""
+    equation = equation.strip()
+
+    # Account for equation beginning with negative number
+    if equation == '':
+        return 0
 
     if '.' in equation and equation.replace('.', '').isnumeric():
         return float(equation)
     if equation.isnumeric():
         return int(equation)
 
-    # First remove leading and trailing parentheses
-    rev = reversed(equation.rstrip())
+    # If the equation ends in a parenthetical statement,
+    # evaluate the right-most inner parenthetical statement (middle_part)
+    # evaluate_equation(middle_part) could be negative
+    if equation.endswith(')'):
+        left_part, right_part = equation.rsplit('(', 1)
+        middle_part, right_part = right_part.split(')', 1)
+        new_equation = left_part + str(evaluate_equation(middle_part)) + right_part
+        return evaluate_equation(new_equation)
 
-    # The transition will be the operator (+, -, *,  or /)
-    second_part = []
-    transition = []
+    plus_index, minus_index, mul_index, div_index, par_end_index = map(equation.rfind, '+-*/)')
 
-    # Encapsulate an ending parenthetical equation
-    nesting = 0
-    for char in rev:
-        if char == ')':
-            nesting += 1
-        if char == '(':
-            nesting -= 1
-        if not nesting and not char.isnumeric():
-            if char == '(':
-                second_part.append(char)
-            else:
-                transition.append(char)
-            break
-        second_part.append(char)
-
-    # Multiplication and division have higher priority,
-    # So find next plus or minus sign first
-    if not char in '+-':
-        for char in rev:
-            if char in '+-)':
-                break
-            transition.append(char)
-    if char in '+-':
-        op = char
-        first_part = list(rev)
-        second_part.extend(transition[:-1])
+    # If a plus or minus sign exists after the last parenthetical statement,
+    # use it as the operator because multiplication and division are more tightly-bound
+    if (max_plus_minus_index := max(plus_index, minus_index)) > par_end_index:
+        index = max_plus_minus_index
     else:
-        op = None
+        index = max(mul_index, div_index)
+    op = equation[index]
 
-    # If there is no plus or minus sign between end of first part and
-    # beginning of second part, find multiplicaton or division sign
-    if not op:
-        first_part = []
-        for char in transition:
-            if char in '*/' and not op:
-                op = char
-                continue
-            if not op:
-                second_part.append(char)
+    # Account for negative intermediate value
+    right_factor = 1
+    if op == '-':
+        index -= 1
+        while equation[index] not in '+-*/' and not equation[index].isnumeric():
+            index -= 1
+        if equation[index] in '+-*/':
+            right_factor = -1
+            minus_index = equation.rfind('-', minus_index)
+            if (max_plus_minus_index := max(plus_index, minus_index)) > par_end_index:
+                index = max_plus_minus_index
             else:
-                first_part.append(char)
-        first_part.extend(rev)
+                index = max(mul_index, div_index)
+            op = equation[index]
 
-    first_part = ''.join(reversed(first_part)).strip()
-    second_part = ''.join(reversed(second_part)).strip()
-    if second_part[0] == '(':
-        second_part = second_part[1:-1]
-
-    # If entire equation in parentheses
-    if not first_part:
-        return evaluate_equation(second_part)
+    # Split the equation into left and right parts based on the operator
+    left_part, right_part = equation.rsplit(op, 1)
 
     if op == '+':
-        return evaluate_equation(first_part) + evaluate_equation(second_part)
+        return evaluate_equation(left_part) + right_factor*evaluate_equation(right_part)
     if op == '-':
-        return evaluate_equation(first_part) - evaluate_equation(second_part)
+        return evaluate_equation(left_part) - right_factor*evaluate_equation(right_part)
     if op == '*':
-        return evaluate_equation(first_part) * evaluate_equation(second_part)
+        return evaluate_equation(left_part) * right_factor*evaluate_equation(right_part)
     if op == '/':
-        return evaluate_equation(first_part) / evaluate_equation(second_part)
+        return evaluate_equation(left_part) / right_factor*evaluate_equation(right_part)
 
     return None
 
 
 if __name__ == '__main__':
 
+    print('Starting evaluate.py tests...')
+
     test_equations = [
         '3 - 4',
+        '-2 + 7',
         '3 - 4 + 8',
         '3 - (4 + 8)',
         '3 - 10 * (4 + 8)',
@@ -173,4 +158,4 @@ if __name__ == '__main__':
     assert evaluate_equation(FLOAT_EQUATION) == eval(FLOAT_EQUATION)
     assert evaluate_equation_regex(FLOAT_EQUATION) == eval(FLOAT_EQUATION)
 
-    print('All tests pass')
+    print('All evaluate.py tests pass')
