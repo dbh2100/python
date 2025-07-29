@@ -2,7 +2,7 @@
 
 import operator
 import functools
-from   typing import Union
+from   typing import Union, Optional
 
 PairList = list[tuple[int, str]]
 NumberList = list[Union[float, int]]
@@ -35,7 +35,7 @@ def counting_sort(arr: PairList) -> PairList:
     k = max(keys) + 1
 
     count: list[int] = k * [0]
-    output = n * [None]
+    output = n * [(0, '')]
 
     # count becomes histogram
     for key in keys:
