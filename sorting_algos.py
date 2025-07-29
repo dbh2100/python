@@ -2,6 +2,7 @@
 
 import operator
 import functools
+from   numbers import Real
 
 
 def radix_sort(arr: list[int]) -> list[int]:
@@ -50,7 +51,7 @@ def counting_sort(arr: list[tuple[int, str]]) -> list[tuple[int, str]]:
     return output
 
 
-def bucket_sort(arr, k):
+def bucket_sort(arr: list[Real], k: int) -> list[Real]:
     """k is the number of buckets"""
 
     buckets = [[] for _ in range(k)]
@@ -71,7 +72,7 @@ def bucket_sort(arr, k):
     return functools.reduce(operator.add, buckets)
 
 
-def bubble_sort(arr):
+def bubble_sort(arr: list[Real]) -> list[Real]:
     """Implement bubble sort"""
     n = len(arr)
     for _ in range(n):
@@ -81,7 +82,7 @@ def bubble_sort(arr):
     return arr
 
 
-def quick_sort(arr):
+def quick_sort(arr: list[Real]) -> list[Real]:
     """Implement quick sort"""
 
     if not arr:
@@ -99,7 +100,7 @@ def quick_sort(arr):
     return quick_sort(arr1) + [pivot] + quick_sort(arr2)
 
 
-def shell_sort(arr):
+def shell_sort(arr: list[Real]) -> list[Real]:
     """Implement shell sort"""
 
     gaps = [701, 301, 132, 57, 23, 10, 4, 1]
