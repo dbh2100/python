@@ -2,7 +2,7 @@
 
 import operator
 import functools
-from   typing import Union, Optional
+from   typing import Union
 
 PairList = list[tuple[int, str]]
 NumberList = list[Union[float, int]]
