@@ -1,86 +1,11 @@
-'''
-from sorting_algos import radix_sort
-import random
-ints = [random.randint(0, 10000) for _ in range(30)]
-print(ints)
-sorted_ints = radix_sort(ints)
-print(sorted_ints)
-
-'''
+"""This module implements well-known sorting algorithms in Python"""
 
 import operator
 import functools
-from string import ascii_lowercase
-from typing import NamedTuple, List
 
 
-class Pair(NamedTuple):
-    """Defines element used in counting_sort"""
-    key: int
-    num_string: str
-
-
-def radix_sort_str(arr, is_lower=True):
-    '''arr is array of strings
-    If is_lower is True, each string is entirely lowercase letters
-    '''
-
-    k = max(map(len, arr))
-
-    for i in reversed(range(k)):
-        arr = counting_sort_str(arr, i, is_lower)
-
-    return arr
-
-def counting_sort_str(arr, si, is_lower=True):
-    '''arr is array of strings
-    si is the string index to get the key
-    If is_lower is True, each string is entirely lowercase letters
-    '''
-
-    if is_lower:
-        char_to_num_map = {char: i for i, char in enumerate(ascii_lowercase)}
-        char_to_num = char_to_num_map.get
-    else:
-        char_to_num = ord
-
-    @functools.lru_cache(maxsize=None)
-    def get_key(s):
-        '''Return number associated with character at index si plus 1
-        If string is shorter, return 0
-        '''
-        try:
-            return char_to_num(s[si]) + 1
-        except IndexError:
-            return 0
-
-    keys = list(map(get_key, arr))
-
-    n = len(arr)
-    min_key = min(keys)
-    k = max(keys) + 1
-
-    count = k * [0]
-    output = n * [None]
-
-    # count becomes histogram
-    for key in keys:
-        count[key] += 1
-
-    # count becomes running total
-    for i in range(min_key+1, k):
-        count[i] += count[i-1]
-
-    # create sorted array
-    for item in reversed(arr):
-        key = get_key(item)
-        count[key] -= 1
-        output[count[key]] = item
-
-    return output
-
-def radix_sort(arr):
-    '''Impement radix sort'''
+def radix_sort(arr: list[int]) -> list[int]:
+    """Implement radix sort"""
 
     num_strings = list(map(str, arr))
     k = max(map(len, num_strings))
@@ -90,21 +15,22 @@ def radix_sort(arr):
         num_strings[i] = num_strings[i].zfill(k)
 
     for i in reversed(range(k)):
-        keyed = [Pair(int(num_string[i]), num_string) for num_string in num_strings]
+        keyed = [(int(num_string[i]), num_string) for num_string in num_strings]
         sorted_keyed = counting_sort(keyed)
-        num_strings = [pair.num_string for pair in sorted_keyed]
+        num_strings = [pair[1] for pair in sorted_keyed]
 
     return list(map(int, num_strings))
 
-def counting_sort(arr: List[Pair]):
-    '''arr is array of tuples each of whose first element is its key'''
 
-    keys = [item.key for item in arr]
+def counting_sort(arr: list[tuple[int, str]]) -> list[tuple[int, str]]:
+    """arr is array of tuples each of whose first element is its key"""
+
+    keys = [item[0] for item in arr]
 
     n = len(arr)
     k = max(keys) + 1
 
-    count = k * [0]
+    count: list[int] = k * [0]
     output = n * [None]
 
     # count becomes histogram
@@ -118,13 +44,14 @@ def counting_sort(arr: List[Pair]):
     # create sorted array
     for item in reversed(arr):
         # key = get_key(item)
-        count[item.key] -= 1
-        output[count[item.key]] = item
+        count[item[0]] -= 1
+        output[count[item[0]]] = item
 
     return output
 
+
 def bucket_sort(arr, k):
-    '''k is number of buckets'''
+    """k is the number of buckets"""
 
     buckets = [[] for _ in range(k)]
 
@@ -143,8 +70,9 @@ def bucket_sort(arr, k):
 
     return functools.reduce(operator.add, buckets)
 
+
 def bubble_sort(arr):
-    '''Implement bubble sort'''
+    """Implement bubble sort"""
     n = len(arr)
     for _ in range(n):
         for i in range(n-1):
@@ -152,8 +80,9 @@ def bubble_sort(arr):
                 arr[i], arr[i+1] = arr[i+1], arr[i]
     return arr
 
+
 def quick_sort(arr):
-    '''Implement quick sort'''
+    """Implement quick sort"""
 
     if not arr:
         return []
@@ -169,8 +98,9 @@ def quick_sort(arr):
 
     return quick_sort(arr1) + [pivot] + quick_sort(arr2)
 
+
 def shell_sort(arr):
-    '''Implement shell sort'''
+    """Implement shell sort"""
 
     gaps = [701, 301, 132, 57, 23, 10, 4, 1]
 
@@ -199,3 +129,11 @@ def shell_sort(arr):
                 arr[j] = temp
 
     return arr
+
+
+if __name__ == '__main__':
+    import random
+    ints = [random.randint(0, 10000) for _ in range(30)]
+    print(ints)
+    sorted_ints = radix_sort(ints)
+    print(sorted_ints)
