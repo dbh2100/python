@@ -66,6 +66,31 @@ def evaluate_equation_regex(equation):
     return float(equation) if '.' in equation else int(equation)
 
 
+def _get_operator_and_right_factor(equation, right_factor=1):
+
+    plus_index, minus_index, mul_index, div_index, par_end_index = map(equation.rfind, '+-*/)')
+    if right_factor == -1:
+        minus_index = equation.rfind('-', 0, minus_index)
+
+    # If a plus or minus sign exists after the last parenthetical statement,
+    # use it as the operator because multiplication and division are more tightly-bound
+    if (max_plus_minus_index := max(plus_index, minus_index)) > par_end_index:
+        index = max_plus_minus_index
+    else:
+        index = max(mul_index, div_index)
+    op = equation[index]
+
+    # Account for negative intermediate value
+    if op == '-':
+        index -= 1
+        while equation[index] not in '+-*/' and not equation[index].isnumeric():
+            index -= 1
+        if equation[index] in '+-*/':
+            return _get_operator_and_right_factor(equation, -1)
+
+    return op, right_factor
+
+
 def evaluate_equation(equation):
     """Evaluate a mathematical equation just using Python builtins"""
     equation = equation.strip()
@@ -88,30 +113,7 @@ def evaluate_equation(equation):
         new_equation = left_part + str(evaluate_equation(middle_part)) + right_part
         return evaluate_equation(new_equation)
 
-    plus_index, minus_index, mul_index, div_index, par_end_index = map(equation.rfind, '+-*/)')
-
-    # If a plus or minus sign exists after the last parenthetical statement,
-    # use it as the operator because multiplication and division are more tightly-bound
-    if (max_plus_minus_index := max(plus_index, minus_index)) > par_end_index:
-        index = max_plus_minus_index
-    else:
-        index = max(mul_index, div_index)
-    op = equation[index]
-
-    # Account for negative intermediate value
-    right_factor = 1
-    if op == '-':
-        index -= 1
-        while equation[index] not in '+-*/' and not equation[index].isnumeric():
-            index -= 1
-        if equation[index] in '+-*/':
-            right_factor = -1
-            minus_index = equation.rfind('-', minus_index)
-            if (max_plus_minus_index := max(plus_index, minus_index)) > par_end_index:
-                index = max_plus_minus_index
-            else:
-                index = max(mul_index, div_index)
-            op = equation[index]
+    op, right_factor = _get_operator_and_right_factor(equation)
 
     # Split the equation into left and right parts based on the operator
     left_part, right_part = equation.rsplit(op, 1)
