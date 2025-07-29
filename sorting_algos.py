@@ -2,7 +2,10 @@
 
 import operator
 import functools
-from   numbers import Real
+from   typing import Union
+
+PairList = list[tuple[int, str]]
+NumberList = list[Union[float, int]]
 
 
 def radix_sort(arr: list[int]) -> list[int]:
@@ -23,7 +26,7 @@ def radix_sort(arr: list[int]) -> list[int]:
     return list(map(int, num_strings))
 
 
-def counting_sort(arr: list[tuple[int, str]]) -> list[tuple[int, str]]:
+def counting_sort(arr: PairList) -> PairList:
     """arr is array of tuples each of whose first element is its key"""
 
     keys = [item[0] for item in arr]
@@ -51,7 +54,7 @@ def counting_sort(arr: list[tuple[int, str]]) -> list[tuple[int, str]]:
     return output
 
 
-def bucket_sort(arr: list[Real], k: int) -> list[Real]:
+def bucket_sort(arr: NumberList, k: int) -> NumberList:
     """k is the number of buckets"""
 
     buckets = [[] for _ in range(k)]
@@ -72,7 +75,7 @@ def bucket_sort(arr: list[Real], k: int) -> list[Real]:
     return functools.reduce(operator.add, buckets)
 
 
-def bubble_sort(arr: list[Real]) -> list[Real]:
+def bubble_sort(arr: NumberList) -> NumberList:
     """Implement bubble sort"""
     n = len(arr)
     for _ in range(n):
@@ -82,7 +85,7 @@ def bubble_sort(arr: list[Real]) -> list[Real]:
     return arr
 
 
-def quick_sort(arr: list[Real]) -> list[Real]:
+def quick_sort(arr: NumberList) -> NumberList:
     """Implement quick sort"""
 
     if not arr:
@@ -100,7 +103,7 @@ def quick_sort(arr: list[Real]) -> list[Real]:
     return quick_sort(arr1) + [pivot] + quick_sort(arr2)
 
 
-def shell_sort(arr: list[Real]) -> list[Real]:
+def shell_sort(arr: NumberList) -> NumberList:
     """Implement shell sort"""
 
     gaps = [701, 301, 132, 57, 23, 10, 4, 1]
