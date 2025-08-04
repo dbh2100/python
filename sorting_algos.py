@@ -2,10 +2,9 @@
 
 import operator
 import functools
-from   typing import Union
 
 PairList = list[tuple[int, str]]
-NumberList = list[Union[float, int]]
+NumberList = list[int]
 
 
 def radix_sort(arr: list[int]) -> list[int]:
@@ -134,10 +133,54 @@ def shell_sort(arr: NumberList) -> NumberList:
 
     return arr
 
+def combine_lists(arr1: NumberList, arr2: NumberList) -> NumberList:
+    """Combine sorted lists, helper for merge sort"""
+
+    output = []
+
+    length1, length2 = len(arr1), len(arr2)
+
+    i1, i2 = 0, 0
+
+    while i1 < length1 or i2 < length2:
+
+        if i1 == length1:
+            output.extend(arr2[i2:])
+            i2 = length2
+
+        elif i2 == length2:
+            output.extend(arr1[i1:])
+            i1 = length1
+
+        elif arr1[i1] <= arr2[i2]:
+            output.append(arr1[i1])
+            i1 += 1
+
+        else:
+            output.append(arr2[i2])
+            i2 += 1
+
+    return output
+
+def merge_sort(arr: NumberList) -> NumberList:
+    """Implement merge sort"""
+
+    if len(arr) <= 1:
+        return arr
+
+    midpoint = len(arr) // 2
+
+    left = merge_sort(arr[:midpoint])
+    right = merge_sort(arr[midpoint:])
+
+    return combine_lists(left, right)
+
 
 if __name__ == '__main__':
+
     import random
-    ints = [random.randint(0, 10000) for _ in range(30)]
+    ints = [random.randint(0, 10000) for _ in range(20)]
     print(ints)
-    sorted_ints = radix_sort(ints)
-    print(sorted_ints)
+
+    for sort_function in (radix_sort, bubble_sort, quick_sort, shell_sort, merge_sort):
+        print(f'Output from {sort_function.__name__}: {sort_function(ints)}')
