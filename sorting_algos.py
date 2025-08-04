@@ -133,6 +133,7 @@ def shell_sort(arr: NumberList) -> NumberList:
 
     return arr
 
+
 def combine_lists(arr1: NumberList, arr2: NumberList) -> NumberList:
     """Combine sorted lists, helper for merge sort"""
 
@@ -161,6 +162,7 @@ def combine_lists(arr1: NumberList, arr2: NumberList) -> NumberList:
             i2 += 1
 
     return output
+
 
 def merge_sort(arr: NumberList) -> NumberList:
     """Implement merge sort"""
