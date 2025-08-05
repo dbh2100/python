@@ -4,7 +4,6 @@ import operator
 import functools
 
 PairList = list[tuple[int, str]]
-NumberList = list[int]
 
 
 def radix_sort(arr: list[int]) -> list[int]:
@@ -53,7 +52,7 @@ def counting_sort(arr: PairList) -> PairList:
     return output
 
 
-def bucket_sort(arr: NumberList, k: int) -> NumberList:
+def bucket_sort(arr: list[int], k: int) -> list[int]:
     """k is the number of buckets"""
 
     buckets = [[] for _ in range(k)]
@@ -74,7 +73,7 @@ def bucket_sort(arr: NumberList, k: int) -> NumberList:
     return functools.reduce(operator.add, buckets)
 
 
-def bubble_sort(arr: NumberList) -> NumberList:
+def bubble_sort(arr: list[int]) -> list[int]:
     """Implement bubble sort"""
     n = len(arr)
     for _ in range(n):
@@ -84,7 +83,7 @@ def bubble_sort(arr: NumberList) -> NumberList:
     return arr
 
 
-def quick_sort(arr: NumberList) -> NumberList:
+def quick_sort(arr: list[int]) -> list[int]:
     """Implement quick sort"""
 
     if not arr:
@@ -102,7 +101,7 @@ def quick_sort(arr: NumberList) -> NumberList:
     return quick_sort(arr1) + [pivot] + quick_sort(arr2)
 
 
-def shell_sort(arr: NumberList) -> NumberList:
+def shell_sort(arr: list[int]) -> list[int]:
     """Implement shell sort"""
 
     gaps = [701, 301, 132, 57, 23, 10, 4, 1]
@@ -134,7 +133,7 @@ def shell_sort(arr: NumberList) -> NumberList:
     return arr
 
 
-def combine_lists(arr1: NumberList, arr2: NumberList) -> NumberList:
+def combine_lists(arr1: list[int], arr2: list[int]) -> list[int]:
     """Combine sorted lists, helper for merge sort"""
 
     output = []
@@ -164,7 +163,7 @@ def combine_lists(arr1: NumberList, arr2: NumberList) -> NumberList:
     return output
 
 
-def merge_sort(arr: NumberList) -> NumberList:
+def merge_sort(arr: list[int]) -> list[int]:
     """Implement merge sort"""
 
     if len(arr) <= 1:
@@ -178,11 +177,43 @@ def merge_sort(arr: NumberList) -> NumberList:
     return combine_lists(left, right)
 
 
+def merge_sort_bottom_up(arr: list[int]) -> list[int]:
+    """Implement merge sort using a bottom-up alogirthm"""
+
+    n = len(arr)
+
+    # Length of each chunk to be sorted
+    # Will double each iteration of the main loop
+    sublength = 2
+
+    sorted_array = arr.copy()
+
+    while sublength <= n:
+
+        offset = 0
+
+        while offset < n:
+            subarray = sorted_array[offset:offset + sublength]
+            midpoint = sublength // 2
+            left, right = subarray[:midpoint], subarray[midpoint:]
+            sorted_subarray = combine_lists(left, right)
+            for i in range(sublength):
+                if (offset + i) == n:
+                    break
+                sorted_array[offset + i] = sorted_subarray[i]
+            offset += sublength
+
+        sublength *= 2
+
+    return sorted_array
+
+
 if __name__ == '__main__':
 
     import random
     ints = [random.randint(0, 10000) for _ in range(20)]
     print(ints)
 
-    for sort_function in (radix_sort, bubble_sort, quick_sort, shell_sort, merge_sort):
+    for sort_function in (radix_sort, bubble_sort, quick_sort, shell_sort,
+                          merge_sort, merge_sort_bottom_up):
         print(f'Output from {sort_function.__name__}: {sort_function(ints)}')
