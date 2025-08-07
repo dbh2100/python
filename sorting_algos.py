@@ -218,7 +218,7 @@ if __name__ == '__main__':
     sorted_list_1 = sorted(list_1)
     sorted_list_2 = sorted(list_2)
 
-    print(f'Starting {__name__} tests...')
+    print(f'Starting sorting algorithm tests...')
 
     for sort_function in (radix_sort, bubble_sort, quick_sort, shell_sort,
                           merge_sort, merge_sort_bottom_up):
@@ -227,4 +227,4 @@ if __name__ == '__main__':
             assert sort_function(list_2) == sorted_list_2
         print(f'{sort_function.__name__}() test passes')
 
-    print()
+    print(100 * '*')

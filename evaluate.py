@@ -161,4 +161,4 @@ if __name__ == '__main__':
     assert evaluate_equation_regex(FLOAT_EQUATION) == eval(FLOAT_EQUATION)
 
     print('All evaluate.py tests pass')
-    print()
+    print(100 * '*')
