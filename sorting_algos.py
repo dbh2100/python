@@ -211,9 +211,16 @@ def merge_sort_bottom_up(arr: list[int]) -> list[int]:
 if __name__ == '__main__':
 
     import random
-    ints = [random.randint(0, 10000) for _ in range(20)]
-    print(ints)
+
+    list_1 = [random.randint(0, 10000) for _ in range(50)]
+    list_2 = [random.randint(0, 10000) for _ in range(32)]
+
+    sorted_list_1 = sorted(list_1)
+    sorted_list_2 = sorted(list_2)
 
     for sort_function in (radix_sort, bubble_sort, quick_sort, shell_sort,
                           merge_sort, merge_sort_bottom_up):
-        print(f'Output from {sort_function.__name__}: {sort_function(ints)}')
+        assert sort_function(list_1) == sorted_list_1
+        if 'merge' in sort_function.__name__:
+            assert sort_function(list_2) == sorted_list_2
+        print(f'{sort_function.__name__}() test passes')
