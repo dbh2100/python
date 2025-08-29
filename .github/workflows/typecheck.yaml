@@ -1,7 +1,7 @@
 on: push
 
 jobs:
-  analyze:
+  typecheck:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
