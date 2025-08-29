@@ -1,14 +1,24 @@
 """Defines a blockchain"""
 
-from dataclasses import dataclass
+from   pydantic import BaseModel, Field
+from   typing import Optional
 import datetime
 import hashlib
 import base64
-import logging
 
 
-@dataclass
-class Block:
+def get_block_hash(block_info: dict, previous_hash: Optional[bytes] = None) -> bytes:
+    """Calculate the hash of the current block"""
+    previous_hash = previous_hash or block_info['previous_block_hash']
+    txn_hash = block_info['data1'] + block_info['data2'] + block_info['data3']
+    block_header = bytes(block_info['block_number'])
+    block_header += bytes(str(block_info['created_dt']), encoding='utf8')
+    block_header += previous_hash
+    combined = bytes(txn_hash, encoding='utf8') + block_header
+    return base64.b64encode(hashlib.sha256(combined).digest())
+
+
+class Block(BaseModel):
     """Block for Blockchain"""
 
     data1: str
@@ -16,37 +26,22 @@ class Block:
     data3: str
     block_number: int
     previous_block_hash: bytes
-
-    def __post_init__(self):
-        self.created_dt = datetime.datetime.now()
-        self.block_hash = self.get_block_hash(self.previous_block_hash)
-        self.next_block = None
-        self.logger = logging.getLogger(repr(self))
+    created_dt: datetime.datetime = datetime.datetime.now()
+    block_hash: bytes = Field(default_factory=get_block_hash)
+    next_block: 'Block|None' = None
 
     def __repr__(self):
         return f'Block{self.block_number}'
 
-    def get_block_hash(self, previous_block_hash):
-        """Calculate the hash of the current block"""
-        txn_hash = self.data1 + self.data2 + self.data3
-        block_header = bytes(self.block_number)\
-            + bytes(str(self.created_dt), encoding='utf8')\
-            + previous_block_hash
-        combined = bytes(txn_hash, encoding='utf8') + block_header
-        return base64.b64encode(hashlib.sha256(combined).digest())
-
-    def is_valid_chain(self, previous_block_hash):
+    def is_valid_block(self, previous_block_hash: bytes) -> bool:
         """Validate block
         If validation fails, the entire blockchain is not valid
         """
-        block_hash = self.get_block_hash(previous_block_hash)
-        if block_hash != self.block_hash:
-            self.logger.info('FAILED VERIFICATION')
+        if self.block_hash != get_block_hash(self.model_dump(), previous_block_hash):
             return False
-        self.logger.info('PASS VERIFICATION')
         if self.next_block is None:
             return True
-        return self.next_block.is_valid_chain(self.block_hash)
+        return self.next_block.is_valid_block(self.block_hash)
 
 
 class BlockChain:
@@ -59,9 +54,14 @@ class BlockChain:
 
     def add_block(self, data1, data2, data3):
         """Add a block to the blockchain with given data"""
+
         self._count += 1
         previous_block_hash = self._last_block.block_hash if self._last_block else b''
-        block = Block(data1, data2, data3, self._count, previous_block_hash)
+        block = Block(
+            data1=data1, data2=data2, data3=data3, block_number=self._count,
+            previous_block_hash=previous_block_hash
+        )
+
         if self._head is None:
             self._head = block
         if self._last_block is not None:
@@ -72,4 +72,4 @@ class BlockChain:
         """Check if blockchain is valid"""
         if self._head is None:
             raise ValueError('Genesis block not set')
-        return self._head.is_valid_chain(b'')
+        return self._head.is_valid_block(b'')
