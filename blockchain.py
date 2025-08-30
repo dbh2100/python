@@ -27,7 +27,7 @@ class Block(BaseModel):
     block_number: int
     previous_block_hash: bytes
     created_dt: datetime.datetime = datetime.datetime.now()
-    block_hash: bytes = Field(default_factory=get_block_hash)
+    block_hash: bytes = Field(default_factory=lambda data: get_block_hash(data))
 
     def __repr__(self):
         return f'Block{self.block_number}'
@@ -55,6 +55,7 @@ class BlockChain:
             data1=data1, data2=data2, data3=data3, block_number=self._count,
             previous_block_hash=previous_block_hash
         )
+        self._last_block = block
         self._block_map[previous_block_hash] = block
 
     def is_valid_chain(self):
