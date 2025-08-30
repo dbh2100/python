@@ -28,7 +28,6 @@ class Block(BaseModel):
     previous_block_hash: bytes
     created_dt: datetime.datetime = datetime.datetime.now()
     block_hash: bytes = Field(default_factory=get_block_hash)
-    next_block: 'Block|None' = None
 
     def __repr__(self):
         return f'Block{self.block_number}'
