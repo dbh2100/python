@@ -37,39 +37,38 @@ class Block(BaseModel):
         """Validate block
         If validation fails, the entire blockchain is not valid
         """
-        if self.block_hash != get_block_hash(self.model_dump(), previous_block_hash):
-            return False
-        if self.next_block is None:
-            return True
-        return self.next_block.is_valid_block(self.block_hash)
+        return self.block_hash == get_block_hash(self.model_dump(), previous_block_hash)
 
 
 class BlockChain:
     """Blockchain class"""
 
     def __init__(self):
-        self._head = None
-        self._last_block = None
-        self._count = 0
+        self._last_block: Optional[Block] = None
+        self._count: int = 0
+        self._block_map: dict[bytes, Block] = {}
 
     def add_block(self, data1, data2, data3):
         """Add a block to the blockchain with given data"""
-
         self._count += 1
         previous_block_hash = self._last_block.block_hash if self._last_block else b''
         block = Block(
             data1=data1, data2=data2, data3=data3, block_number=self._count,
             previous_block_hash=previous_block_hash
         )
-
-        if self._head is None:
-            self._head = block
-        if self._last_block is not None:
-            self._last_block.next_block = block
-        self._last_block = block
+        self._block_map[previous_block_hash] = block
 
     def is_valid_chain(self):
         """Check if blockchain is valid"""
-        if self._head is None:
-            raise ValueError('Genesis block not set')
-        return self._head.is_valid_block(b'')
+
+        block = self._block_map.get(b'')
+        if block is None:
+            raise ValueError('Genesis block not found')
+
+        while block.block_hash in self._block_map:
+            next_block = self._block_map[block.block_hash]
+            if not next_block.is_valid_block(block.block_hash):
+                return False
+            block = next_block
+
+        return True
