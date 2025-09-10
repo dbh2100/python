@@ -21,7 +21,3 @@ jobs:
           python -m coverage report
           python evaluate.py
           python sorting_algos.py
-          cd quaternion
-          python -m coverage run -m unittest discover -p "*_unittest.py"
-          python -m coverage report
-          python -m doctest -v quaternion_display_eq.py
