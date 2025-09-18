@@ -4,11 +4,9 @@
 
 This repository contains several Python projects I have worked on in my spare time over the years, including
 
-* Python number type representations
-  * [Quaternions](https://github.com/dbh2100/python/tree/main/quaternion)
-  * [Aleph numbers](https://github.com/dbh2100/python/tree/main/aleph_numbers)
+* [Aleph numbers](https://github.com/dbh2100/python/tree/main/aleph_numbers)
 
-* Python representations of 2- and 3-dimensional games
+* [Python representations of 2- and 3-dimensional games](https://github.com/dbh2100/python/tree/main/games)
   * [2048](https://github.com/dbh2100/python/blob/main/games/game_2048.py)
   * [Connect4](https://github.com/dbh2100/python/blob/main/games/connect4.py)
   * [Othello](https://github.com/dbh2100/python/blob/main/games/othello.py)
