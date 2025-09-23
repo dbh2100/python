@@ -1,3 +1,3 @@
 """Define Python packages"""
 
-packages = ['', 'data_structures', 'quaternion']
+packages = ['', 'data_structures']
