@@ -16,4 +16,4 @@ jobs:
           pip install -r requirements.txt
       - name: Typcheck Python files with mypy
         run: |
-          mypy . --ignore-missing-imports --show-error-codes --no-warn-unused-ignores
+          mypy . --ignore-missing-imports --show-error-codes --no-warn-unused-ignores --no-namespace-packages
