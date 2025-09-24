@@ -28,7 +28,7 @@ class Emoji(metaclass=EmojiMeta):
     """
 
     # Map of emoji name to instance
-    _instances = {}
+    _instances: dict[str, 'Emoji'] = {}
 
     @classmethod
     def register_or_update(cls, name, picture):
