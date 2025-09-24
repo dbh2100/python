@@ -55,7 +55,7 @@ def counting_sort(arr: PairList) -> PairList:
 def bucket_sort(arr: list[int], k: int) -> list[int]:
     """k is the number of buckets"""
 
-    buckets = [[] for _ in range(k)]
+    buckets: list[list[int]] = [[] for _ in range(k)]
 
     min_elem = min(arr)
     max_elem = max(arr)

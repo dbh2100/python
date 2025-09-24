@@ -133,7 +133,9 @@ def rebalance(head_node):
 
 if __name__ == '__main__':
 
-    tree = {}
+    from typing import Any
+
+    tree: dict[str, Any] = {}
     nums = [15, 10, 3, 8, 2, 6, 12, 4, 5, 3, 14, 3, 23, 1, 19]
     for num in nums:
         insert_value(tree, num)

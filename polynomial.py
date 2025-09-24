@@ -1,18 +1,17 @@
 '''Defines a polynomial function class'''
 
 from numbers import Number
-from collections.abc import Callable
 from itertools import zip_longest
 from instance_class_method import InstanceClassMethod
 
 
-class Polynomial(Callable):
+class Polynomial:
     '''Polynomial function class
         The constructor arguments are the polynomial coefficients
         Polynomial(a0, a1, a2, ...) is the same as a0 + a1x + a2x^2 + ...
         '''
 
-    factors = {}
+    factors: dict['Polynomial', tuple['Polynomial', 'Polynomial']] = {}
 
     def __init__(self, *coeffs):
         if not coeffs:
