@@ -27,6 +27,15 @@ class OmnisetTest(unittest.TestCase):
         omniset2 = Omniset()
         self.assertIs(omniset1, omniset2)
 
+    def test_no_arguments_allowed(self):
+        """Test that Omniset constructor does not accept arguments"""
+        with self.assertRaises(TypeError):
+            Omniset(1)
+        with self.assertRaises(TypeError):
+            Omniset(a=1)
+        with self.assertRaises(TypeError):
+            Omniset(1, 2, 3)
+
 
 if __name__ == '__main__':
     unittest.main()
