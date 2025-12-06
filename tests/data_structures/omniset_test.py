@@ -36,6 +36,12 @@ class OmnisetTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             Omniset(1, 2, 3)
 
+    def test_length_raises_overflowerror(self):
+        """Test that len(Omniset) raises OverflowError"""
+        omniset = Omniset()
+        with self.assertRaises(OverflowError):
+            len(omniset)
+
 
 if __name__ == '__main__':
     unittest.main()

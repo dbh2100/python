@@ -8,3 +8,6 @@ class Omniset(frozenset, Singleton):
 
     def __contains__(self, element: object) -> bool:
         return element is not self
+
+    def __len__(self) -> int:
+        raise OverflowError("The omniset has no finite length.")
