@@ -2,7 +2,7 @@
 
 from graph_distance import add_connection
 
-def get_bipartite(graph):
+def get_bipartite(graph: dict) -> list[set]:
     """Return bipartite representation of a dict graph
     Each element in one of the two sets is connected only to elements
     in the other set

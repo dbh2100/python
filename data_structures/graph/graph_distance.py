@@ -5,15 +5,18 @@ from collections import defaultdict, deque
 import heapq
 
 
-def add_connection(graph, node1, node2, distance):
+Graph = dict[str, list[tuple[str, float]]]
+
+
+def add_connection(graph: Graph, node1: str, node2: str, distance: float) -> None:
     """Connect node1 and node2 in dict graph"""
     graph.setdefault(node1, [])
-    graph[node1].append([node2, distance])
+    graph[node1].append((node2, distance))
     graph.setdefault(node2, [])
-    graph[node2].append([node1, distance])
+    graph[node2].append((node1, distance))
 
 
-def calculate_min_distance(graph, node1, node2):
+def calculate_min_distance(graph: Graph, node1: str, node2: str) -> float:
     """Calculate minimum distance between two graph nodes using Dijkstra's algorithm"""
 
     # Create map of node to [distance, node] 2-lists
@@ -51,7 +54,7 @@ def calculate_min_distance(graph, node1, node2):
     raise ValueError(f'No path can be made between {node1} and {node2}')
 
 
-def find_min_connects(graph, node1, node2):
+def find_min_connects(graph: Graph, node1: str, node2: str) -> int:
     '''Find distance for unweighted graph'''
 
     # Create queue and add origin
@@ -75,7 +78,7 @@ def find_min_connects(graph, node1, node2):
     raise ValueError(f'No path can be made between {node1} and {node2}')
 
 
-def get_min_spanning_tree(graph):
+def get_min_spanning_tree(graph: Graph) -> Graph:
     """Returns the subtree with the lowest combined distances between nodes
     where each node connected in the original tree is connected in the subtree
 

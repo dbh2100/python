@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """Defines a directed acyclic graph"""
 
 from collections import deque
@@ -9,18 +11,18 @@ import operator
 class GraphNode:
     """Node for DAG"""
 
-    def __init__(self, name):
+    def __init__(self, name: str):
         self.name = name
         self.children = set()
 
     def __repr__(self):
         return f'Node_{self.name}'
 
-    def add_child(self, child):
+    def add_child(self, child: GraphNode):
         """Add an out-connection to the node"""
         self.children.add(child)
 
-    def remove_child(self, child):
+    def remove_child(self, child: GraphNode):
         """Remove a child node"""
         try:
             self.children.remove(child)
