@@ -29,7 +29,7 @@ class Block(BaseModel):
     created_dt: datetime.datetime = datetime.datetime.now()
     block_hash: bytes = Field(default_factory=lambda data: get_block_hash(data))
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'Block{self.block_number}'
 
     def is_valid_block(self, previous_block_hash: bytes) -> bool:
@@ -42,12 +42,12 @@ class Block(BaseModel):
 class BlockChain:
     """Blockchain class"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._last_block: Optional[Block] = None
         self._count: int = 0
         self._block_map: dict[bytes, Block] = {}
 
-    def add_block(self, data1, data2, data3):
+    def add_block(self, data1, data2, data3) -> None:
         """Add a block to the blockchain with given data"""
         self._count += 1
         previous_block_hash = self._last_block.block_hash if self._last_block else b''
@@ -58,7 +58,7 @@ class BlockChain:
         self._last_block = block
         self._block_map[previous_block_hash] = block
 
-    def is_valid_chain(self):
+    def is_valid_chain(self) -> bool:
         """Check if blockchain is valid"""
 
         block = self._block_map.get(b'')
