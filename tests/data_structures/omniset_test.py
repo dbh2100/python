@@ -42,6 +42,57 @@ class OmnisetTest(unittest.TestCase):
         with self.assertRaises(OverflowError):
             len(omniset)
 
+    def test_issubset(self):
+        """Test subset behavior of Omniset"""
+
+        omniset = Omniset()
+        other_set = {1, 2, 3}
+
+        self.assertFalse(omniset.issubset(other_set))
+        self.assertTrue(omniset.issubset(omniset))
+
+    def test_issuperset(self):
+        """Test superset behavior of Omniset"""
+
+        omniset = Omniset()
+        other_set = {1, 2, 3}
+
+        self.assertTrue(omniset.issuperset(other_set))
+        self.assertTrue(omniset.issuperset(omniset))
+
+    def test_union(self):
+        """Test union of Omniset with another set"""
+
+        omniset = Omniset()
+
+        # Test with one set
+        other_set = {1, 2, 3}
+        union = omniset.union(other_set)
+        self.assertIs(union, omniset)
+
+        # Test with multiple sets
+        other_set2 = frozenset({4, 5, 6})
+        union2 = omniset.union(other_set, other_set2)
+        self.assertIs(union2, omniset)
+
+    def test_intersection(self):
+        """Test intersection of Omniset with another set"""
+
+        omniset = Omniset()
+
+        # Test with no arguments
+        self.assertEqual(omniset.intersection(), omniset)
+
+        # Test with one set
+        other_set = {1, 2, 3}
+        intersection = omniset.intersection(other_set)
+        self.assertEqual(intersection, other_set)
+
+        # Test with multiple sets
+        other_set2 = frozenset({2, 3, 4})
+        intersection2 = omniset.intersection(other_set, other_set2)
+        self.assertEqual(intersection2, {2, 3})
+
 
 if __name__ == '__main__':
     unittest.main()
