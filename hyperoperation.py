@@ -1,5 +1,5 @@
 '''
-This module defines hyperoperations including tetration.
+This module defines hyperoperations including tetration and a general h.
 '''
 
 
