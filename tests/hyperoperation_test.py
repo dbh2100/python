@@ -1,5 +1,7 @@
+'''Defines tests for hyperoperation functions.'''
+
 import unittest
-from hyperoperation import tetration
+from hyperoperation import tetration, hyperoperation
 
 
 class TestHyperoperation(unittest.TestCase):
@@ -15,3 +17,13 @@ class TestHyperoperation(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             tetration(3, -1)
+
+    def test_hyperoperation(self):
+        self.assertEqual(hyperoperation(2, 3, level=0), 4)  # Successor
+        self.assertEqual(hyperoperation(2, 3, level=1), 5)  # Addition
+        self.assertEqual(hyperoperation(2, 3, level=2), 6)  # Multiplication
+        self.assertEqual(hyperoperation(2, 3, level=3), 8) # Exponentiation
+        self.assertEqual(hyperoperation(3, 2, level=3), 9) # Exponentiation
+        self.assertEqual(hyperoperation(2, 3, level=4), 16) # Tetration
+        self.assertEqual(hyperoperation(3, 2, level=4), 27) # Tetration
+        self.assertEqual(hyperoperation(2, 3, level=5), 65536) # Pentation
