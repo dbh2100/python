@@ -134,14 +134,14 @@ class Rook(Piece):
         if x == self._x:
             step = 1 if y > self._y else -1
             for i in range(self._y + step, y, step):
-                if self._board.squares[i][x] is not None:
-                    if self._board.squares[i][x].color == self.color:
+                if (other_piece := self._board.squares[i][x]) is not None:
+                    if other_piece.color == self.color:
                         return False
         else:  # y == self._y
             step = 1 if x > self._x else -1
             for i in range(self._x + step, x, step):
-                if self._board.squares[y][i] is not None:
-                    if self._board.squares[y][i].color == self.color:
+                if (other_piece := self._board.squares[y][i]) is not None:
+                    if other_piece.color == self.color:
                         return False
 
         return True
@@ -253,10 +253,11 @@ class Board:
     def display_board(self) -> None:
         '''Display the board'''
         range8 = range(8)
-        print(' '.join([4 * '_' for _ in range8]))
-        for row in self.squares:
-            print(' '.join(repr(piece).center(4) if piece else '    ' for piece in row))
-            print(' '.join([4 * '_' for _ in range8]))
+        print('  A    B    C    D    E    F    G    H')
+        print('  ' +' '.join([4 * '_' for _ in range8]))
+        for i, row in enumerate(self.squares):
+            print(f'{i+1}' + ' '.join(repr(piece).center(4) if piece else '    ' for piece in row))
+            print('  ' + ' '.join([4 * '_' for _ in range8]))
 
     def get_move(self) -> bool:
         '''Enter move like "B2 to B4"
