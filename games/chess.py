@@ -69,7 +69,7 @@ class Piece(ABC):
         if (x, y) not in self._valid_moves():
             return False
 
-        if (other_piece := self._board.squares[x][y]) is not None:
+        if (other_piece := self._board.squares[y][x]) is not None:
             if other_piece.color != self.color:
                 other_piece.capture()
                 if isinstance(other_piece, King):
@@ -94,6 +94,9 @@ class Pawn(Piece):
         self._has_moved = False
 
     def _is_valid_move(self, x, y) -> bool:
+
+        if not (0 <= x < 8 and 0 <= y < 8):
+            return False
 
         if (other_piece := self._board.squares[y][x]) is not None:
             if other_piece.color == self.color:
@@ -127,21 +130,25 @@ class Rook(Piece):
     '''The rook piece'''
 
     def _is_valid_move(self, x, y) -> bool:
+
+        if not (0 <= x < 8 and 0 <= y < 8):
+            return False
+
         if x != self._x and y != self._y:
             return False
 
         # Check if there are pieces in the way
         if x == self._x:
             step = 1 if y > self._y else -1
-            for i in range(self._y + step, y, step):
+            for i in range(self._y + step, y+step, step):
                 if (other_piece := self._board.squares[i][x]) is not None:
-                    if other_piece.color == self.color:
+                    if i != y or other_piece.color == self.color:
                         return False
         else:  # y == self._y
             step = 1 if x > self._x else -1
-            for i in range(self._x + step, x, step):
+            for i in range(self._x + step, x+step, step):
                 if (other_piece := self._board.squares[y][i]) is not None:
-                    if other_piece.color == self.color:
+                    if i != x or other_piece.color == self.color:
                         return False
 
         return True
@@ -151,6 +158,10 @@ class Knight(Piece):
     '''The knight piece'''
 
     def _is_valid_move(self, x, y) -> bool:
+
+        if not (0 <= x < 8 and 0 <= y < 8):
+            return False
+
         if (other_piece := self._board.squares[x][y]) is not None:
             if other_piece.color == self.color:
                 return False
@@ -165,6 +176,10 @@ class Bishop(Piece):
     '''The bishop piece'''
 
     def _is_valid_move(self, x, y) -> bool:
+
+        if not (0 <= x < 8 and 0 <= y < 8):
+            return False
+
         if abs(x - self._x) != abs(y - self._y):
             return False
 
@@ -196,6 +211,10 @@ class King(Piece):
     '''The king piece'''
 
     def _is_valid_move(self, x, y) -> bool:
+
+        if not (0 <= x < 8 and 0 <= y < 8):
+            return False
+
         if (other_piece := self._board.squares[x][y]) is not None:
             if other_piece.color == self.color:
                 return False
