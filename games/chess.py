@@ -172,8 +172,8 @@ class Bishop(Piece):
         step_x = 1 if x > self._x else -1
         step_y = 1 if y > self._y else -1
         for i in range(1, abs(x - self._x)):
-            if self._board.squares[self._x + i*step_x][self._y + i*step_y] is not None:
-                if self._board.squares[self._x + i*step_x][self._y + i*step_y].color == self.color:
+            if (other_piece := self._board.squares[self._x + i*step_x][self._y + i*step_y]) is not None:
+                if other_piece.color == self.color:
                     return False
 
         return True
