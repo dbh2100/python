@@ -1,7 +1,7 @@
 """Defines unittests for AlephNumber class"""
 
 import unittest
-from aleph_number import AlephNumber, INFINITY
+from large_numbers.aleph_number import AlephNumber, INFINITY
 
 
 class TestAlephNumber(unittest.TestCase):

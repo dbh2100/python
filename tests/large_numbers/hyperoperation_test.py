@@ -1,7 +1,7 @@
 '''Defines tests for hyperoperation functions.'''
 
 import unittest
-from hyperoperation import tetration, hyperoperation
+from large_numbers.hyperoperation import tetration, hyperoperation
 
 
 class TestHyperoperation(unittest.TestCase):
