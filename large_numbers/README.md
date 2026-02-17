@@ -16,4 +16,4 @@ An aleph (&#8501;) number is a type of infinite number.
 
 #### 3 &#8593;&#8593; 4
 
-A hyperoperation is a higher order of arithmetic operation beyond exponentiaion.  For example the tetration of a number, denoted by x &#8593;&#8593; y, <sup>y</sup>x, or H<sub>4<sub>(x, y), is x to the power of x y times.  So <sup>3</sup>2 = 2<sup>2<sup>2</sup></sup> = 16.  These numbers can become extremely large.  For example, <sup>3</sup>3 = 3<sup>3<sup>3</sup></sup> = 7,625,597,484,987.
+A hyperoperation is a higher order of arithmetic operation beyond exponentiaion.  For example the tetration of a number, denoted by x &#8593;&#8593; y, <sup>y</sup>x, or H<sub>4</sub>(x, y), is x to the power of x y times.  So <sup>3</sup>2 = 2<sup>2<sup>2</sup></sup> = 16.  These numbers can become extremely large.  For example, <sup>3</sup>3 = 3<sup>3<sup>3</sup></sup> = 7,625,597,484,987.
