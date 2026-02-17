@@ -1,6 +1,6 @@
 ## Large Numbers
 
-This folder contains a module defining an aleph number class and one defining hyperoperations.
+This folder contains a module defining an aleph number class and one defining hyperoperation functions.
 
 ### Aleph Numbers
 
