@@ -59,14 +59,10 @@ class Piece(ABC):
     def _is_valid_move(self, x, y) -> bool:
         raise NotImplementedError
 
-    def _valid_moves(self) -> list[tuple[int, int]]:
-        range8 = range(8)
-        return [(i, j) for i in range8 for j in range8 if self._is_valid_move(i, j)]
-
     def move(self, x: int, y: int) -> bool:
         '''Move the piece, return True if valid move, False otherwise'''
 
-        if (x, y) not in self._valid_moves():
+        if not self._is_valid_move(x, y):
             return False
 
         if (other_piece := self._board.squares[y][x]) is not None:
