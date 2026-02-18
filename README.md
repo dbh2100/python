@@ -1,29 +1,37 @@
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
-# Python Repository
+# Python Projects Collection
 
-This repository contains several Python projects I have worked on in my spare time over the years, including
+A curated collection of small Python projects and reference implementations covering algorithms, data structures, numerical utilities, and simple games. These projects are intended for learning, experimentation, and demonstration.
 
-* [Aleph numbers](https://github.com/dbh2100/python/tree/main/large_numbers/aleph_number.py)
+## Highlights
+- [large_numbers](large_numbers): utilities for very large and transfinite numbers (aleph numbers, hyperoperations).
+- [games](games): implementations of several classic games (2048, Connect4, Othello, Rubik's Cube).
+- [data_structures](data_structures): implementations and utilities for graphs, trees, heaps, and immutable mappings.
+- [sorting_algos.py](sorting_algos.py): a set of sorting algorithm implementations and helpers.
+- [blockchain.py](blockchain.py): a minimal illustrative blockchain implementation.
+- [number_to_words.py](number_to_words.py): number-to-words conversion utilities.
+- [prime_gen.py](prime_gen.py): simple prime number generator examples.
+- [running_median.py](running_median.py): streaming running-median implementation.
 
-* [Python representations of 2- and 3-dimensional games](https://github.com/dbh2100/python/tree/main/games)
-  * [2048](https://github.com/dbh2100/python/blob/main/games/game_2048.py)
-  * [Connect4](https://github.com/dbh2100/python/blob/main/games/connect4.py)
-  * [Othello](https://github.com/dbh2100/python/blob/main/games/othello.py)
-  * [Rubik's Cube](https://github.com/dbh2100/python/blob/main/games/rubiks_cube.py)
+## Getting Started
+Install the project dependencies (if needed):
 
-* [Sorting algorithms](https://github.com/dbh2100/python/blob/main/sorting_algos.py)
-  
-* [Data structures](https://github.com/dbh2100/python/tree/main/data_structures)
-  * [Graphs](https://github.com/dbh2100/python/tree/main/data_structures/graph)
-  * [Trees](https://github.com/dbh2100/python/tree/main/data_structures/tree)
-  * [Frozen/Immutable Dict](https://github.com/dbh2100/python/blob/main/data_structures/frozen_dict.py)
-  * [Minimum Heap](https://github.com/dbh2100/python/blob/main/data_structures/min_heap.py)
+```bash
+pip install -r requirements.txt
+```
 
-* [Blockchain](https://github.com/dbh2100/python/blob/main/blockchain.py)
-  
-* [Converting a number to words](https://github.com/dbh2100/python/blob/main/number_to_words.py)
+Run the test suite from the repository root:
 
-* [Prime number generator](https://github.com/dbh2100/python/blob/main/prime_gen.py)
+```bash
+pytest
+```
 
-* [Running median generator](https://github.com/dbh2100/python/blob/main/running_median.py)
+## Contributing
+- Contributions, bug reports, and improvements are welcome. Please open an issue or submit a pull request with a clear description and tests for new behavior.
+
+## License
+See the project root for license information.
+
+## Contact
+For questions or feedback, open an issue in this repository.
