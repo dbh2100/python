@@ -1,0 +1,68 @@
+"""This module defines several monads using Python"""
+
+from dataclasses import dataclass, field
+from typing import Union, Any, Callable
+
+
+Numeric = Union[complex, float, int]
+
+
+@dataclass
+class Maybe:
+    """The Maybe monad"""
+    value: Any
+
+    def bind(self, func: Callable[[Any], Any]):
+        """Binds a function"""
+        if self.value is None:
+            return self
+        return Maybe(func(self.value))
+
+
+@dataclass
+class NumberWithLogs:
+    """This monad logs the application of a function to a number"""
+    value: Numeric
+    logs: list[str] = field(default_factory=list[str])
+
+    def bind(self, func: Callable[[Numeric], Numeric]):
+        """Binds a numeric function"""
+        result = func(self.value)
+        new_log = f'Applying {func.__name__}() to {self.value}'
+        return NumberWithLogs(result, self.logs + [new_log])
+
+
+def add_five(x: Numeric):
+    """Adds 5 to the input"""
+    return x + 5
+
+def cube(x: Numeric):
+    """Cubes the input"""
+    return x ** 3
+
+def sub_3(x: Numeric):
+    """Subtracts 3 from the input"""
+    return x - 3
+
+def divide_into_seven(x: Numeric):
+    """Divides 7 by the input"""
+    try:
+        return 7 / x
+    except ZeroDivisionError:
+        return None
+
+
+if __name__ == '__main__':
+
+    print('Testing Maybe monad...')
+    result1 = Maybe(-2).bind(add_five).bind(divide_into_seven).bind(cube)
+    print(f'{result1 = }')
+    result2 = Maybe(-2).bind(add_five).bind(sub_3).bind(divide_into_seven).bind(cube)
+    print(f'{result2 = }')
+    print()
+
+    print('Testing NumberWithLogs monad...')
+    result3 = NumberWithLogs(11).bind(add_five).bind(cube).bind(sub_3)
+    for log in result3.logs:
+        print(log)
+    print(f'The final value is {result3.value}')
