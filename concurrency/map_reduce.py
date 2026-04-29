@@ -6,14 +6,16 @@ import multiprocessing
 from   queue import Empty
 import time
 from   operator import methodcaller
+import queue
+from   collections.abc import Collection
 
 
-def put_word_length(len_queue, word):
+def put_word_length(len_queue: queue.Queue[int], word: str) -> None:
     """The 'map' function: add the word's length to the length queue"""
     len_queue.put(len(word))
 
 
-def sum_lengths(len_queue, sum_queue):
+def sum_lengths(len_queue: queue.Queue[int], sum_queue: queue.Queue[int]) -> None:
     """The 'reduce' function: sum the word's lengths"""
 
     # Get first word length from length queue if this is first sum process
@@ -27,17 +29,17 @@ def sum_lengths(len_queue, sum_queue):
     try:
         length2 = len_queue.get(timeout=5)
     except Empty:
-        length2 = 0
+        length2  = 0
 
     # Add sum of lengths to sum queue
     # print(length1, length2)
     sum_queue.put(length1 + length2)
 
 
-def get_num_word_chars(file_name):
+def get_num_word_chars(file_name: str) -> int:
     """Find the total number of word characters in a text file"""
     with open(file_name, encoding='utf-8') as fname:
-        word_chars = re.findall(r"\w", fname.read())
+        word_chars: Collection[str] = re.findall(r"\w", fname.read())
     return len(word_chars)
 
 
