@@ -2,7 +2,23 @@
 binary search tree as a Python dict
 """
 
-def insert_value(node, value):
+from __future__ import annotations
+from typing import TypedDict, Union, Literal
+
+
+class DictTree(TypedDict, total=False):
+    """Binary search tree represented as a dict"""
+    value: Union[int, float]
+    left: DictTree
+    right: DictTree
+    size: int
+
+
+Direction = Literal['left', 'right']
+
+
+
+def insert_value(node: DictTree, value: Union[int, float]) -> None:
     """Insert value into binary search tree as dict"""
 
     # If tree/subtree is empty dict, initialize
@@ -19,7 +35,7 @@ def insert_value(node, value):
         node['size'] += 1
 
 
-def calculate_size(node):
+def calculate_size(node: DictTree) -> None:
     """Set a node's size value equal to 1 + the combined sizes
     of its left and right subtrees
     """
@@ -28,7 +44,7 @@ def calculate_size(node):
     node['size'] = 1 + left_size + right_size
 
 
-def find_closest(node, larger=False, remove_node=False):
+def find_closest(node: DictTree, larger=False, remove_node=False) -> DictTree:
     """Find the tree node whose value is closest to node's value
 
     If larger = True, this will be the node with the next largest value.
@@ -40,7 +56,10 @@ def find_closest(node, larger=False, remove_node=False):
     """
 
     # Find label of subtree where target is located and set other to other label
-    direction, other = ('right', 'left') if larger else ('left', 'right')
+    direction: Direction = 'left'
+    other: Direction = 'right'
+    if larger:
+        direction, other = 'right', 'left'
 
     parent, child = node, node[direction]
     while child[other]:
@@ -62,7 +81,7 @@ def find_closest(node, larger=False, remove_node=False):
     return child
 
 
-def remove_value(node, value):
+def remove_value(node: DictTree, value: int) -> DictTree:
     """Remove value from tree"""
 
     if not node:
@@ -88,14 +107,14 @@ def remove_value(node, value):
     return node
 
 
-def get_size_differential(node):
+def get_size_differential(node: DictTree) -> int:
     """Get node number difference between right and left subtrees"""
     num_left = node['left'].get('size', 0)
     num_right = node['right'].get('size', 0)
     return num_right - num_left
 
 
-def rebalance(head_node):
+def rebalance(head_node: DictTree) -> DictTree:
     """Ensure difference between node number on either side of the tree is zero or 1
 
     Call as tree = rebalance(tree)
@@ -105,15 +124,15 @@ def rebalance(head_node):
 
         # Case: left subtree has at least 2 more nodes
         if get_size_differential(head_node) <= -2:
-            direction = 'left'
-            other = 'right'
-            larger = False
+            direction: Direction = 'left'
+            other: Direction = 'right'
+            larger: bool = False
 
         # Case: right subtree has at least 2 more nodes
         else:
             direction = 'right'
-            other = 'left'
-            larger = True
+            other= 'left'
+            larger= True
 
         # Find closest node in subtree with more nodes
         new_head = find_closest(head_node, larger=larger, remove_node=True)
@@ -133,9 +152,7 @@ def rebalance(head_node):
 
 if __name__ == '__main__':
 
-    from typing import Any
-
-    tree: dict[str, Any] = {}
+    tree: DictTree = {}
     nums = [15, 10, 3, 8, 2, 6, 12, 4, 5, 3, 14, 3, 23, 1, 19]
     for num in nums:
         insert_value(tree, num)
