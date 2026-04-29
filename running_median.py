@@ -5,7 +5,7 @@ using a self-balancing binary search tree
 from collections import deque
 from collections.abc import Sequence, Generator
 from data_structures.tree import dict_tree
-from typing import Union, Any
+from typing import Union
 
 
 def get_median(tree: dict_tree.DictTree) -> Union[int, float]:
