@@ -1,7 +1,7 @@
 """This module defines several monads using Python"""
 
 from dataclasses import dataclass, field
-from typing import Union, Any, Callable
+from typing import Union, Optional, Callable
 
 
 Numeric = Union[complex, float, int]
@@ -10,9 +10,9 @@ Numeric = Union[complex, float, int]
 @dataclass
 class Maybe:
     """The Maybe monad"""
-    value: Any
+    value: Optional[Numeric]
 
-    def bind(self, func: Callable[[Any], Any]):
+    def bind(self, func: Callable[[Numeric], Optional[Numeric]]):
         """Binds a function"""
         if self.value is None:
             return self
