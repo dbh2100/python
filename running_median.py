@@ -2,14 +2,13 @@
 using a self-balancing binary search tree
 """
 
-from numbers import Real
 from collections import deque
 from collections.abc import Sequence, Generator
 from data_structures.tree import dict_tree
-from typing import Any
+from typing import Union, Any
 
 
-def get_median(tree: dict) -> Real:
+def get_median(tree: dict_tree.DictTree) -> Union[int, float]:
     """tree is arranged in a balanced binary search tree"""
 
     size_diff = dict_tree.get_size_differential(tree)
@@ -36,14 +35,14 @@ def get_median(tree: dict) -> Real:
     return (value1 + value2) / 2
 
 
-def generate_medians(arr: Sequence, window: int) -> Generator[Real]:
+def generate_medians(arr: Sequence, window: int) -> Generator[Union[int, float]]:
     """window is number of elements from which to derive median"""
 
     # Place numbers in queue
     num_queue = deque(arr[:window])
 
     # Place queue numbers in self-balancing tree
-    tree: dict[str, Any] = {}
+    tree: dict_tree.DictTree = {}
     for num in num_queue:
         dict_tree.insert_value(tree, num)
         tree = dict_tree.rebalance(tree)
