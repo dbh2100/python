@@ -3,19 +3,18 @@
 import re
 from   functools import partial
 import multiprocessing
-from   queue import Empty
+from   queue import Empty, Queue
 import time
 from   operator import methodcaller
-import queue
 from   collections.abc import Collection
 
 
-def put_word_length(len_queue: queue.Queue[int], word: str) -> None:
+def put_word_length(len_queue: Queue[int], word: str) -> None:
     """The 'map' function: add the word's length to the length queue"""
     len_queue.put(len(word))
 
 
-def sum_lengths(len_queue: queue.Queue[int], sum_queue: queue.Queue[int]) -> None:
+def sum_lengths(len_queue: Queue[int], sum_queue: Queue[int]) -> None:
     """The 'reduce' function: sum the word's lengths"""
 
     # Get first word length from length queue if this is first sum process
