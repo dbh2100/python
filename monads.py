@@ -32,19 +32,19 @@ class NumberWithLogs:
         return NumberWithLogs(result, self.logs + [new_log])
 
 
-def add_five(x: Numeric):
+def add_five(x: Numeric) -> Numeric:
     """Adds 5 to the input"""
     return x + 5
 
-def cube(x: Numeric):
+def cube(x: Numeric) -> Numeric:
     """Cubes the input"""
     return x ** 3
 
-def sub_3(x: Numeric):
+def sub_3(x: Numeric) -> Numeric:
     """Subtracts 3 from the input"""
     return x - 3
 
-def divide_into_seven(x: Numeric):
+def divide_into_seven(x: Numeric) -> Optional[Numeric]:
     """Divides 7 by the input"""
     try:
         return 7 / x
