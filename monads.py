@@ -1,5 +1,7 @@
 """This module defines several monads using Python"""
 
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from typing import Union, Optional, TypeVar, Generic
 from collections.abc import Callable
@@ -8,7 +10,7 @@ from collections.abc import Callable
 Numeric = Union[complex, float, int]
 
 T = TypeVar('T')
-U = TypeVar('U')
+U = TypeVar('U', complex, float, int)
 
 
 @dataclass
@@ -16,7 +18,7 @@ class Maybe(Generic[T]):
     """The Maybe monad"""
     value: Optional[T]
 
-    def bind(self, func: Callable[[T], Optional[U]]):
+    def bind(self, func: Callable[[T], Optional[T]]) -> Maybe[T]:
         """Binds a function"""
         if self.value is None:
             return self
@@ -29,29 +31,29 @@ class NumberWithLogs:
     value: Numeric
     logs: list[str] = field(default_factory=list[str])
 
-    def bind(self, func: Callable[[Numeric], Numeric]):
+    def bind(self, func: Callable[[Numeric], Numeric]) -> NumberWithLogs:
         """Binds a numeric function"""
         result = func(self.value)
         new_log = f'Applying {func.__name__}() to {self.value}'
         return NumberWithLogs(result, self.logs + [new_log])
 
 
-def add_five(x: Numeric) -> Numeric:
+def add_five(x: U) -> U:
     """Adds 5 to the input"""
     return x + 5
 
-def cube(x: Numeric) -> Numeric:
+def cube(x: U) -> U:
     """Cubes the input"""
     return x ** 3
 
-def sub_3(x: Numeric) -> Numeric:
+def sub_3(x: U) -> U:
     """Subtracts 3 from the input"""
     return x - 3
 
-def divide_into_seven(x: Numeric) -> Optional[Numeric]:
+def divide_into_seven(x: U) -> Optional[U]:
     """Divides 7 by the input"""
     try:
-        return 7 / x
+        return 7 // x if isinstance(x, int) else 7 / x
     except ZeroDivisionError:
         return None
 
