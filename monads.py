@@ -3,11 +3,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Union, Optional, TypeVar, Generic
+from typing import Optional, TypeVar, Generic
 from collections.abc import Callable
 
-
-Numeric = Union[complex, float, int]
 
 T = TypeVar('T')
 N = TypeVar('N', complex, float, int)
@@ -26,12 +24,12 @@ class Maybe(Generic[T]):
 
 
 @dataclass
-class NumberWithLogs:
+class NumberWithLogs(Generic[N]):
     """This monad logs the application of a function to a number"""
-    value: Numeric
+    value: N
     logs: list[str] = field(default_factory=list[str])
 
-    def bind(self, func: Callable[[Numeric], Numeric]) -> NumberWithLogs:
+    def bind(self, func: Callable[[N], N]) -> NumberWithLogs:
         """Binds a numeric function"""
         result = func(self.value)
         new_log = f'Applying {func.__name__}() to {self.value}'
