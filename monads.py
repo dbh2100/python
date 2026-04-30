@@ -10,7 +10,7 @@ from collections.abc import Callable
 Numeric = Union[complex, float, int]
 
 T = TypeVar('T')
-U = TypeVar('U', complex, float, int)
+N = TypeVar('N', complex, float, int)
 
 
 @dataclass
@@ -38,19 +38,19 @@ class NumberWithLogs:
         return NumberWithLogs(result, self.logs + [new_log])
 
 
-def add_five(x: U) -> U:
+def add_five(x: N) -> N:
     """Adds 5 to the input"""
     return x + 5
 
-def cube(x: U) -> U:
+def cube(x: N) -> N:
     """Cubes the input"""
     return x ** 3
 
-def sub_3(x: U) -> U:
+def sub_3(x: N) -> N:
     """Subtracts 3 from the input"""
     return x - 3
 
-def divide_into_seven(x: U) -> Optional[U]:
+def divide_into_seven(x: N) -> Optional[N]:
     """Divides 7 by the input"""
     try:
         return 7 // x if isinstance(x, int) else 7 / x
