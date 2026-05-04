@@ -1,19 +1,20 @@
 """Defines a blockchain"""
 
 from   pydantic import BaseModel, Field
-from   typing import Optional
+from   typing import Optional, Any
 import datetime
 import hashlib
 import base64
 
 
-def get_block_hash(block_info: dict, previous_hash: Optional[bytes] = None) -> bytes:
+def get_block_hash(block_info: dict[str, Any], previous_hash: Optional[bytes] = None) -> bytes:
     """Calculate the hash of the current block"""
     previous_hash = previous_hash or block_info['previous_block_hash']
     txn_hash = block_info['data1'] + block_info['data2'] + block_info['data3']
     block_header = bytes(block_info['block_number'])
     block_header += bytes(str(block_info['created_dt']), encoding='utf8')
-    block_header += previous_hash
+    if previous_hash:
+        block_header += previous_hash
     combined = bytes(txn_hash, encoding='utf8') + block_header
     return base64.b64encode(hashlib.sha256(combined).digest())
 
@@ -47,7 +48,7 @@ class BlockChain:
         self._count: int = 0
         self._block_map: dict[bytes, Block] = {}
 
-    def add_block(self, data1, data2, data3) -> None:
+    def add_block(self, data1: str, data2: str, data3: str) -> None:
         """Add a block to the blockchain with given data"""
         self._count += 1
         previous_block_hash = self._last_block.block_hash if self._last_block else b''
