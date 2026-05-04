@@ -1,7 +1,10 @@
 """Defines functions to generate prime numbers"""
 
 
-def prime_gen():
+from collections.abc import Generator
+
+
+def prime_gen() -> Generator[int, None, None]:
     """Prime number generator"""
 
     prime_list = []
@@ -21,7 +24,7 @@ def prime_gen():
 _cache = {2: [], 3: [2]}
 
 
-def primes_to_n(n):
+def primes_to_n(n: int) -> list[int]:
     """Return all primes less than or equal to n using cache"""
 
     if n in _cache:
@@ -40,12 +43,12 @@ def primes_to_n(n):
     return primes
 
 
-def primes_to_n_2(n):
+def primes_to_n_2(n: int) -> list[int]:
     """Return all primes less than or equal to n by keeping track
     of smaller primes
     """
 
-    primes = []
+    primes: list[int] = []
 
     for i in range(2, n):
 
