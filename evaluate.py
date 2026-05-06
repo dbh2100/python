@@ -1,19 +1,20 @@
 """This module defines functions that replicate Python's builtin eval()"""
 
 import re
+from   typing import Union, Final, Any
 
 
 # Regular expression patterns
-PARENTHESIS_RE = re.compile(r'\( [^()]* \)', flags=re.VERBOSE)
-NUMBER_PATTERN = r'-? \d+ ([.]\d*)?'
-MULT_DIV_RE = re.compile(
+PARENTHESIS_RE: Final[re.Pattern[Any]] = re.compile(r'\( [^()]* \)', flags=re.VERBOSE)
+NUMBER_PATTERN: Final[str] = r'-? \d+ ([.]\d*)?'
+MULT_DIV_RE: Final[re.Pattern[str]] = re.compile(
     rf'({NUMBER_PATTERN}) \s* ([*/]) \s* ({NUMBER_PATTERN})', flags=re.VERBOSE)
-ADD_SUB_RE = re.compile(
+ADD_SUB_RE: Final[re.Pattern[str]] = re.compile(
     rf'({NUMBER_PATTERN}) \s* ([+-]) \s* ({NUMBER_PATTERN})', flags=re.VERBOSE
 )
 
 
-def _evaluate_binary(match_obj):
+def _evaluate_binary(match_obj: re.Match[str]) -> str:
 
     # Group 2 is the decimal point and following digits, or none
     num1_str, num2_str = map(match_obj.group, (1, 4))
@@ -36,37 +37,39 @@ def _evaluate_binary(match_obj):
     raise ValueError('Invalid operator')
 
 
-def evaluate_equation_regex(equation):
+def evaluate_equation_regex(input_equation: Union[str, re.Match[str]]) -> Union[float, int, str]:
     """Evaluate a mathematical equation using regular expressions"""
 
     # If used recursively, argument would be regex match object
     # so convert to string and remove leading and trailing parentheses
     return_string = False
-    if isinstance(equation, re.Match):
-        equation = equation.group(0).removeprefix('(').removesuffix(')')
+    if isinstance(input_equation, re.Match):
+        str_equation = input_equation.group(0).removeprefix('(').removesuffix(')')
         return_string = True
+    else:
+        str_equation = input_equation.strip()
 
     # Evaluate all parenthetical components
-    while PARENTHESIS_RE.search(equation):
-        equation = PARENTHESIS_RE.sub(evaluate_equation_regex, equation)
+    while PARENTHESIS_RE.search(str_equation):
+        str_equation = PARENTHESIS_RE.sub(evaluate_equation_regex, str_equation)
 
     # Multiplication and divison have order precedence
-    while MULT_DIV_RE.search(equation):
-        equation = MULT_DIV_RE.sub(_evaluate_binary, equation)
+    while MULT_DIV_RE.search(str_equation):
+        str_equation = MULT_DIV_RE.sub(_evaluate_binary, str_equation)
 
     # Now execute addition and subtraction
-    while ADD_SUB_RE.search(equation):
-        equation = ADD_SUB_RE.sub(_evaluate_binary, equation)
+    while ADD_SUB_RE.search(str_equation):
+        str_equation = ADD_SUB_RE.sub(_evaluate_binary, str_equation)
 
     # If function called recursively, keep number as string
     if return_string:
-        return equation
+        return str_equation
 
     # Otherwise, return number in appropriate format
-    return float(equation) if '.' in equation else int(equation)
+    return float(str_equation) if '.' in str_equation else int(str_equation)
 
 
-def _get_operator_and_right_factor(equation, right_factor=1):
+def _get_operator_and_right_factor(equation: str, right_factor: int = 1) -> tuple[str, int]:
 
     plus_index, minus_index, mul_index, div_index, par_end_index = map(equation.rfind, '+-*/)')
     if right_factor == -1:
@@ -91,7 +94,7 @@ def _get_operator_and_right_factor(equation, right_factor=1):
     return op, right_factor
 
 
-def evaluate_equation(equation):
+def evaluate_equation(equation: str) -> Union[float, int]:
     """Evaluate a mathematical equation just using Python builtins"""
     equation = equation.strip()
 
@@ -127,7 +130,7 @@ def evaluate_equation(equation):
     if op == '/':
         return evaluate_equation(left_part) / right_factor*evaluate_equation(right_part)
 
-    return None
+    raise ValueError(f"Unsupported operator: {op}")
 
 
 if __name__ == '__main__':
