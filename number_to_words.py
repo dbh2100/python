@@ -25,9 +25,12 @@ Defines function to convert an integer to words
 '''
 
 
+from typing import Final
+
+
 # Words corresponding to the first 19 positive integers
-FIRST_19 = [
-    None,
+FIRST_19: Final[list[str]] = [
+    '',
     'one',
     'two',
     'three',
@@ -50,9 +53,9 @@ FIRST_19 = [
 ]
 
 # Words corresponding to multiples of 10
-MUTLIPLES_10 = [
-    None,
-    None,
+MUTLIPLES_10: Final[list[str]] = [
+    '',
+    '',
     'twenty',
     'thirty',
     'forty',
@@ -64,8 +67,8 @@ MUTLIPLES_10 = [
 ]
 
 # Words corresponding to powers of 1000
-POWERS_1000 = [
-    None,
+POWERS_1000: Final[list[str]] = [
+    '',
     'thousand',
     'million',
     'billion',
@@ -80,7 +83,7 @@ POWERS_1000 = [
 ]
 
 
-def _convert_chunk(chunk):
+def _convert_chunk(chunk: str) -> list[str]:
     '''Returns words associated with chunk separated by comma'''
 
     # Intialize list
@@ -113,7 +116,7 @@ def _convert_chunk(chunk):
     return chunk_words
 
 
-def convert_to_words(num):
+def convert_to_words(num: int) -> str:
     '''Convert integer num to words'''
 
     # Base case: the only time "zero" is part of number
