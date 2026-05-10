@@ -59,6 +59,7 @@ class NumberWithLogs(Generic[N]):
     >>> print(result.value)
     3375
     """
+
     value: N
     logs: list[str] = field(default_factory=list[str])
 
