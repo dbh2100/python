@@ -14,12 +14,21 @@ with appropriate handling for division by zero in the Maybe monad.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Optional, TypeVar, Generic
+from typing import Optional, TypeVar, Generic, Protocol, runtime_checkable
 from collections.abc import Callable
 
 
 T = TypeVar('T')
 N = TypeVar('N', complex, float, int)
+
+
+@runtime_checkable
+class Monad(Protocol[T]):
+    """A protocol for monads, defining the bind operation"""
+
+    def __rshift__(self, func: Callable[[T], T]) -> Monad[T]:
+        """The bind operation, which applies a function to the value inside the monad"""
+        ...
 
 
 @dataclass
@@ -92,6 +101,7 @@ def divide_into_seven(x: N) -> Optional[N]:
 if __name__ == '__main__':
 
     print('Testing Maybe monad...')
+    print(f'Maybe is a monad: {isinstance(Maybe(0), Monad)}')
     result1 = Maybe(-2) >> add_five >> divide_into_seven >> cube
     print(f'{result1 = }')
     result2 = Maybe(-2) >> add_five >> sub_3 >> divide_into_seven >> cube
@@ -99,6 +109,7 @@ if __name__ == '__main__':
     print()
 
     print('Testing NumberWithLogs monad...')
+    print(f'NumberWithLogs is a monad: {isinstance(NumberWithLogs(0), Monad)}')
     result3 = NumberWithLogs(11) >> add_five >> cube >> sub_3
     for log in result3.logs:
         print(log)
