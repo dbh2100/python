@@ -1,4 +1,15 @@
-"""This module defines several monads using Python"""
+"""This module defines several monads using Python
+
+The Maybe monad is used to handle computations that may fail, while the
+NumberWithLogs monad is used to log the application of functions to numbers.
+The module also includes some example functions and demonstrates how to use
+these monads in a simple way.
+
+Binding is implemented using the right shift operator (>>), which allows for
+chaining operations in a clean and readable manner. The example functions include
+adding five, cubing a number, subtracting three, and dividing seven by a number,
+with appropriate handling for division by zero in the Maybe monad.
+"""
 
 from __future__ import annotations
 
@@ -13,11 +24,23 @@ N = TypeVar('N', complex, float, int)
 
 @dataclass
 class Maybe(Generic[T]):
-    """The Maybe monad"""
+    """The Maybe monad
+
+    This monad is used to handle computations that may fail. If a computation fails,
+    the value is set to None and subsequent operations will not be applied.
+
+    Example usage:
+    >>> result = Maybe(-2) >> add_five >> divide_into_seven >> cube
+    >>> print(result)
+    Maybe(value=8)
+    >>> result = Maybe(0) >> divide_into_seven
+    >>> print(result)
+    Maybe(value=None)
+    """
+
     value: Optional[T]
 
-    def bind(self, func: Callable[[T], Optional[T]]) -> Maybe[T]:
-        """Binds a function"""
+    def __rshift__(self, func: Callable[[T], Optional[T]]) -> Maybe[T]:
         if self.value is None:
             return self
         return Maybe(func(self.value))
@@ -25,12 +48,21 @@ class Maybe(Generic[T]):
 
 @dataclass
 class NumberWithLogs(Generic[N]):
-    """This monad logs the application of a function to a number"""
+    """This monad logs the application of a function to a number
+    
+    Example usage:
+    >>> result = NumberWithLogs(10) >> add_five >> cube
+    >>> for log in result.logs:
+    ...     print(log)
+    Applying add_five() to 10
+    Applying cube() to 15
+    >>> print(result.value)
+    3375
+    """
     value: N
     logs: list[str] = field(default_factory=list[str])
 
-    def bind(self, func: Callable[[N], N]) -> NumberWithLogs:
-        """Binds a numeric function"""
+    def __rshift__(self, func: Callable[[N], N]) -> NumberWithLogs:
         result = func(self.value)
         new_log = f'Applying {func.__name__}() to {self.value}'
         return NumberWithLogs(result, self.logs + [new_log])
@@ -59,14 +91,14 @@ def divide_into_seven(x: N) -> Optional[N]:
 if __name__ == '__main__':
 
     print('Testing Maybe monad...')
-    result1 = Maybe(-2).bind(add_five).bind(divide_into_seven).bind(cube)
+    result1 = Maybe(-2) >> add_five >> divide_into_seven >> cube
     print(f'{result1 = }')
-    result2 = Maybe(-2).bind(add_five).bind(sub_3).bind(divide_into_seven).bind(cube)
+    result2 = Maybe(-2) >> add_five >> sub_3 >> divide_into_seven >> cube
     print(f'{result2 = }')
     print()
 
     print('Testing NumberWithLogs monad...')
-    result3 = NumberWithLogs(11).bind(add_five).bind(cube).bind(sub_3)
+    result3 = NumberWithLogs(11) >> add_five >> cube >> sub_3
     for log in result3.logs:
         print(log)
     print(f'The final value is {result3.value}')

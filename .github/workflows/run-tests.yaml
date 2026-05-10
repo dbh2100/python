@@ -21,3 +21,4 @@ jobs:
           python -m coverage report
           python evaluate.py
           python sorting_algos.py
+          python -m doctest -v monads.py
