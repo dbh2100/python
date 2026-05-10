@@ -62,7 +62,7 @@ class NumberWithLogs(Generic[N]):
     value: N
     logs: list[str] = field(default_factory=list[str])
 
-    def __rshift__(self, func: Callable[[N], N]) -> NumberWithLogs:
+    def __rshift__(self, func: Callable[[N], N]) -> NumberWithLogs[N]:
         result = func(self.value)
         new_log = f'Applying {func.__name__}() to {self.value}'
         return NumberWithLogs(result, self.logs + [new_log])
